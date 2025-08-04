@@ -14,7 +14,7 @@
   <a href="https://github.com/Zheng-Chong/FastFit" style="margin: 0 2px; text-decoration: none;">
     <img src='https://img.shields.io/badge/GitHub-Repo-blue?style=flat&logo=GitHub' alt='GitHub'>
   </a>
-  <a href="http://123.56.183.38:7860" style="margin: 0 2px; text-decoration: none;">
+  <a href="https://fastfit.loomlyai.com" style="margin: 0 2px; text-decoration: none;">
     <img src='https://img.shields.io/badge/Demo-Gradio-gold?style=flat&logo=Gradio&logoColor=red' alt='Demo'>
   </a>
   <a href='https://zheng-chong.github.io/FastFit/' style="margin: 0 2px;">
@@ -30,7 +30,7 @@
 FastFit is a diffusion-based framework optimized for **high-speed**, **multi-reference virtual try-on**. It enables **simultaneous try-on of multiple fashion items**—such as **tops, bottoms, dresses, shoes, and bags**—on a single person. The framework leverages **reference KV caching** during inference to **significantly accelerate generation**.
  
 ## Updates 
-- **`2025/08/04`**: 🚀 Our [gradio demo](http://123.56.183.38:7860) is online! The code of the demo is also released in [app.py](app.py).
+- **`2025/08/04`**: 🚀 Our [gradio demo](https://fastfit.loomlyai.com) is online! The code of the demo is also released in [app.py](app.py).
 - **`2025/07/03`**: 🎉 We release the weights of [FastFit-MR](https://huggingface.co/zhengchong/FastFit-MR-1024) and [FastFit-SR](https://huggingface.co/zhengchong/FastFit-SR-1024) model on Hugging Face!
 - **`2025/06/24`**: 📷 We release [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) dataset with **28K+ Multi-reference virtual try-on Samples** on Hugging Face!
 

@@ -27,7 +27,7 @@ translations = {
                     <a href="https://github.com/Zheng-Chong/FastFit" style="margin: 0 2px; text-decoration: none;"><img src='https://img.shields.io/badge/arXiv-TODO-red?style=flat&logo=arXiv&logoColor=red' alt='arxiv'></a>
                     <a href='https://huggingface.co/zhengchong/FastFit-MR-1024' style="margin: 0 2px;"><img src='https://img.shields.io/badge/Hugging Face-ckpts-orange?style=flat&logo=HuggingFace&logoColor=orange' alt='huggingface'></a>
                     <a href="https://github.com/Zheng-Chong/FastFit" style="margin: 0 2px;"><img src='https://img.shields.io/badge/GitHub-Repo-blue?style=flat&logo=GitHub' alt='GitHub'></a>
-                    <a href="http://123.56.183.38:7860" style="margin: 0 2px;"><img src='https://img.shields.io/badge/Demo-Gradio-gold?style=flat&logo=Gradio&logoColor=red' alt='Demo'></a>
+                    <a href="https://fastfit.loomlyai.com" style="margin: 0 2px;"><img src='https://img.shields.io/badge/Demo-Gradio-gold?style=flat&logo=Gradio&logoColor=red' alt='Demo'></a>
                     <a href='https://zheng-chong.github.io/FastFit/' style="margin: 0 2px;"><img src='https://img.shields.io/badge/Webpage-Project-silver?style=flat&logo=&logoColor=orange' alt='webpage'></a>
                     <a href="https://github.com/Zheng-Chong/FastFit/blob/main/LICENSE.md" style="margin: 0 2px;"><img src='https://img.shields.io/badge/License-NonCommercial-lightgreen?style=flat&logo=Lisence' alt='License'></a>
                 </div>
@@ -100,7 +100,7 @@ translations = {
                     <a href="https://github.com/Zheng-Chong/FastFit" style="margin: 0 2px; text-decoration: none;"><img src='https://img.shields.io/badge/arXiv-TODO-red?style=flat&logo=arXiv&logoColor=red' alt='arxiv'></a>
                     <a href='https://huggingface.co/zhengchong/FastFit-MR-1024' style="margin: 0 2px;"><img src='https://img.shields.io/badge/Hugging Face-ckpts-orange?style=flat&logo=HuggingFace&logoColor=orange' alt='huggingface'></a>
                     <a href="https://github.com/Zheng-Chong/FastFit" style="margin: 0 2px;"><img src='https://img.shields.io/badge/GitHub-Repo-blue?style=flat&logo=GitHub' alt='GitHub'></a>
-                    <a href="http://123.56.183.38:7860" style="margin: 0 2px;"><img src='https://img.shields.io/badge/Demo-Gradio-gold?style=flat&logo=Gradio&logoColor=red' alt='Demo'></a>
+                    <a href="https://fastfit.loomlyai.com" style="margin: 0 2px;"><img src='https://img.shields.io/badge/Demo-Gradio-gold?style=flat&logo=Gradio&logoColor=red' alt='Demo'></a>
                     <a href='https://zheng-chong.github.io/FastFit/' style="margin: 0 2px;"><img src='https://img.shields.io/badge/Webpage-Project-silver?style=flat&logo=&logoColor=orange' alt='webpage'></a>
                     <a href="https://github.com/Zheng-Chong/FastFit/blob/main/LICENSE.md" style="margin: 0 2px;"><img src='https://img.shields.io/badge/License-NonCommercial-lightgreen?style=flat&logo=Lisence' alt='License'></a>
                 </div>
