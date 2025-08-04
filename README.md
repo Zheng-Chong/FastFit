@@ -55,6 +55,9 @@ python app.py
 
 ``` -->
 
+## Acknowledgement
+Our code is modified based on [Diffusers](https://github.com/huggingface/diffusers). We adopt [Stable Diffusion v1.5 inpainting](https://huggingface.co/runwayml/stable-diffusion-inpainting) as the base model. We use a modified [AutoMasker](https://github.com/Zheng-Chong/CatVTON/blob/edited/model/cloth_masker.py) to automatically generate masks in our [Gradio](https://github.com/gradio-app/gradio) App and [ComfyUI](https://github.com/comfyanonymous/ComfyUI) workflow. Thanks to all the contributors!
+
 ## License
 
 All weights, parameters, and code related to FastFit are governed by the [FastFit Non-Commercial License](https://github.com/Zheng-Chong/FastFit/tree/main). For commercial licensing, please visit [LavieAI](https://lavieai.com/) or [LoomlyAI](https://www.loomlyai.com/en).
