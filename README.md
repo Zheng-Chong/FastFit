@@ -4,7 +4,9 @@
 <p align="center">Supported by <a href="https://lavieai.com/">LavieAI</a> and <a href="https://www.loomlyai.com/zh">LoomlyAI</a>.</p>
 
 
-<div style="display: flex; justify-content: center; align-items: center;">
+<!-- <div style="display: flex; justify-content: center; align-items: center;">
+ -->
+ <div align="center">
   <!-- <a href="http://arxiv.org/abs/2407.15886" style="margin: 0 2px;">
     <img src='https://img.shields.io/badge/arXiv-2407.15886-red?style=flat&logo=arXiv&logoColor=red' alt='arxiv'>
   </a> -->
