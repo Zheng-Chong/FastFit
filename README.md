@@ -1,6 +1,7 @@
-<p align="center">
-# FastFit: Accelerating Multi-Reference Virtual Try-On via Cacheable Diffusion Models
-</p>
+
+<h1 align="center"> FastFit: Accelerating Multi-Reference Virtual Try-On via Cacheable Diffusion Models </h1>
+
+<p align="center">Supported by <a href="https://lavieai.com/">LavieAI</a> and <a href="https://www.loomlyai.com/zh">LoomlyAI</a>.</p>
 
 
 <div style="display: flex; justify-content: center; align-items: center;">
@@ -24,7 +25,6 @@
   </a>
 </div>
 
-<p align="center">Supported by <a href="https://lavieai.com/">LavieAI</a> and <a href="https://www.loomlyai.com/zh">LoomlyAI</a>.</p>
 
 FastFit is a diffusion-based framework optimized for high-speed, multi-reference virtual try-on. It enables simultaneous try-on of multiple fashion items—such as tops, bottoms, dresses, shoes, and bags—on a single person. The framework leverages reference KV caching during inference to significantly accelerate generation.
 
