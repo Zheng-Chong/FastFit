@@ -1,4 +1,6 @@
+<p align="center">
 # FastFit: Accelerating Multi-Reference Virtual Try-On via Cacheable Diffusion Models
+</p>
 
 
 <div style="display: flex; justify-content: center; align-items: center;">
