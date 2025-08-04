@@ -6,7 +6,6 @@ transformers
 gradio
 accelerate
 opencv-python
-huggingface-hub==0.30.0
 scikit-image
 fvcore
 cloudpickle

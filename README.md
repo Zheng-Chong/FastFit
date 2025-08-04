@@ -40,6 +40,7 @@ FastFit is a diffusion-based framework optimized for **high-speed**, **multi-ref
 conda create -n fastfit python=3.10
 conda activate fastfit
 pip install -r requirements.txt
+pip install huggingface-hub==0.30.0  # to resolve the version conflict
 ```
 
 ## Gradio Demo
