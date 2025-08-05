@@ -49,6 +49,8 @@ PROTECT_BODY_PARTS = {
     'overall': [],
     'inner': ['Left-leg', 'Right-leg'],
     'outer': ['Left-leg', 'Right-leg'],
+    'shoes': ['Right-arm', 'Left-arm', 'Face', 'Left-leg', 'Right-leg'],
+    'bag': ['Face'],
 }
 PROTECT_CLOTH_PARTS = {
     'upper': {
@@ -60,8 +62,6 @@ PROTECT_CLOTH_PARTS = {
         'LIP': ['Upper-clothes', 'Coat', 'Left-shoe', 'Right-shoe']
     },
     'overall': {
-        # 'ATR': [],
-        # 'LIP': []
         'ATR': ['Left-shoe', 'Right-shoe'],
         'LIP': ['Left-shoe', 'Right-shoe']
     },
@@ -72,22 +72,34 @@ PROTECT_CLOTH_PARTS = {
     'outer': {
         'ATR': ['Dress', 'Pants', 'Skirt'],
         'LIP': ['Upper-clothes', 'Dress', 'Pants', 'Skirt', 'Jumpsuits']
+    },
+    'shoes': {
+        'ATR': [],
+        'LIP': []
+    },
+    'bag': {
+        'ATR': [],
+        'LIP': []
     }
 }
-PUBLIC_ACCESSORY_PARTS = ['Hat', 'Glove', 'Sunglasses', 'Scarf', 'Bag', 'Socks']  # 'Left-shoe', 'Right-shoe', 
+PUBLIC_ACCESSORY_PARTS = ['Hat', 'Glove', 'Sunglasses', 'Scarf', 'Socks']  # 'Left-shoe', 'Right-shoe', 'Bag'
 MASK_CLOTH_PARTS = {
     'upper': ['Upper-clothes', 'Coat', 'Dress', 'Jumpsuits'],
     'lower': ['Pants', 'Skirt', 'Dress', 'Jumpsuits'],
-    'overall': ['Upper-clothes', 'Dress', 'Pants', 'Skirt', 'Coat', 'Jumpsuits'],  # , 'Left-shoe', 'Right-shoe'
+    'overall': ['Upper-clothes', 'Dress', 'Pants', 'Skirt', 'Coat', 'Jumpsuits'],
     'inner': ['Upper-clothes'],
-    'outer': ['Coat',]
+    'outer': ['Coat',],
+    'shoes': ['Left-shoe', 'Right-shoe'],
+    'bag': ['Bag'],
 }
 MASK_DENSE_PARTS = {
     'upper': ['torso', 'big arms', 'forearms'],
     'lower': ['thighs', 'legs'],
     'overall': ['torso', 'thighs', 'legs', 'big arms', 'forearms'],
     'inner': ['torso'],
-    'outer': ['torso', 'big arms', 'forearms']
+    'outer': ['torso', 'big arms', 'forearms'],
+    'shoes': ['right foot', 'left foot'],
+    'bag': [],
 }
 
 
@@ -266,7 +278,7 @@ def cloth_agnostic_mask(
 ) -> Image.Image:
     if part == 'full' or part == 'dresses':
         part = 'overall'
-    assert part in ['upper', 'lower', 'overall', 'inner', 'outer'], f"part should be one of ['upper', 'lower', 'overall', 'inner', 'outer'], but got {part}"
+    assert part in ['upper', 'lower', 'overall', 'inner', 'outer', 'shoes', 'bag'], f"part should be one of ['upper', 'lower', 'overall', 'inner', 'outer', 'shoes', 'bag'], but got {part}"
     w, h = densepose_mask.shape[:2]
     
     dilate_kernel = max(w, h) // 500
@@ -306,20 +318,20 @@ def cloth_agnostic_mask(
     mask_dense_area = cv2.dilate(mask_dense_area, dilate_kernel, iterations=2)
     mask_dense_area = cv2.resize(mask_dense_area.astype(np.uint8), None, fx=4, fy=4, interpolation=cv2.INTER_NEAREST)
 
-    mask_area = (np.ones_like(densepose_mask) & (~weak_protect_area) & (~background_area)) | mask_dense_area
-
+    mask_area = (mask_dense_area | strong_mask_area & (~weak_protect_area) & (~background_area))
+    
     # 边缘平滑（去除毛刺）
     mask_area = cv2.GaussianBlur(mask_area * 255, (kernal_size, kernal_size), 0)
     mask_area[mask_area < 100] = 0
     mask_area[mask_area >= 100] = 1
     
-    # 确保只有一个连通域
-    num_labels, labels = cv2.connectedComponents(mask_area.astype(np.uint8))
-    if num_labels > 2:  # 背景(0)和一个前景区域
-        label_counts = np.bincount(labels.flatten()) # 找到最大连通区域的标签
-        label_counts[0] = 0  # 排除背景
-        largest_label = np.argmax(label_counts)
-        mask_area = (labels == largest_label).astype(np.uint8)  # 创建只包含最大连通区域的掩码，并填充内部空洞
+    # 确保只有2个以下连通域
+    # num_labels, labels = cv2.connectedComponents(mask_area.astype(np.uint8))
+    # if num_labels > 3:  # 背景(0)和一个前景区域
+    #     label_counts = np.bincount(labels.flatten()) # 找到最大连通区域的标签
+    #     label_counts[0] = 0  # 排除背景
+    #     largest_label = np.argmax(label_counts)
+    #     mask_area = (labels == largest_label).astype(np.uint8)  # 创建只包含最大连通区域的掩码，并填充内部空洞
 
     
     # 凸包扩张
@@ -342,7 +354,6 @@ def cloth_agnostic_mask(
     # Pooling
     mask_area = cv2.dilate(mask_area, dilate_kernel - 2, iterations=2)
     
-
     return Image.fromarray(mask_area * 255)
     
 def multi_ref_cloth_agnostic_mask(
