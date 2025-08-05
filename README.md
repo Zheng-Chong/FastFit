@@ -41,14 +41,16 @@ FastFit is a diffusion-based framework optimized for **high-speed**, **multi-ref
 <div align="center">
   <img src="assets/img/dataset.png" alt="DressCode-MR Dataset" width="800">
 </div>
+
 [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) is constructed based on the [DressCode](https://github.com/aimagelab/dress-code) dataset with **28K+ Multi-reference virtual try-on Samples**.
 
-- Multi-reference Samples: Each sample comprises a person's image paired with a set of compatible clothing and accessory items: tops, bottoms, dresses, shoes, and bags.
-- Large Scale: Contains a total of 28,179 high-quality multi-reference samples with 25,779 for training and 2,400 for testing.
+- **Multi-reference Samples**: Each sample comprises a person's image paired with a set of compatible clothing and accessory items: tops, bottoms, dresses, shoes, and bags.
+- **Large Scale**: Contains a total of 28,179 high-quality multi-reference samples with 25,779 for training and 2,400 for testing.
 
-DressCode-MR is released under the exact same license as the original DressCode dataset. Therefore, before requesting access to DressCode-MR dataset, you must be granted a license to use the DressCode dataset. 
-When applying for DressCode-MR, you must use your educational/academic email address (e.g., one ending in .edu, .ac, etc.). Any requests from non-academic email addresses will be rejected.
-By submitting a request, you agree to read and abide by the terms of the DressCode dataset's license.
+DressCode-MR is released under the exact same license as the original DressCode dataset. Therefore, before requesting access to DressCode-MR dataset, you must complete the following steps:
+
+1. Apply and be granted a license to use the [DressCode](https://github.com/aimagelab/dress-code) dataset. 
+2. Use your educational/academic email address (e.g., one ending in .edu, .ac, etc.) to request access to [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) on Hugging Face. (Any requests from non-academic email addresses will be rejected.)
 
 ## Installation
 
