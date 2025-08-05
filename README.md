@@ -43,6 +43,25 @@ pip install -r requirements.txt
 pip install huggingface-hub==0.30.0  # to resolve the version conflict
 ```
 
+## ComfyUI Workflow
+
+<div align="center">
+  <img src="assets/img/comfyui.png" alt="ComfyUI Workflow" width="800">
+</div>
+
+1.  Download the `FastFit.zip` file from the [release page](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui).
+2.  Extract the contents of the zip file into your `ComfyUI/custom_nodes/` directory.
+3.  Install the required dependencies following：
+    ```bash
+    cd  Your_ComfyUI_Dir/custom_nodes/FastFit
+    pip install -r requirements.txt
+    pip install huggingface-hub==0.30.0  # to resolve the version conflict
+    ```
+4.  Restart ComfyUI.
+5.  Drag and drop the `FastFit.json` file from the [release page](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui) onto the ComfyUI web interface.
+
+
+
 ## Gradio Demo
 
 The model weights will be automatically downloaded from Hugging Face when you run the demo.
