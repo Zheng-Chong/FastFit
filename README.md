@@ -30,9 +30,10 @@
 FastFit is a diffusion-based framework optimized for **high-speed**, **multi-reference virtual try-on**. It enables **simultaneous try-on of multiple fashion items**—such as **tops, bottoms, dresses, shoes, and bags**—on a single person. The framework leverages **reference KV caching** during inference to **significantly accelerate generation**.
  
 ## Updates 
-- **`2025/08/04`**: 🚀 Our [gradio demo](https://fastfit.lavieai.com) is online! The code of the demo is also released in [app.py](app.py).
+- **`2025/08/05`**: 🧩 We release the [ComfyUI workflow](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui) for FastFit!
+- **`2025/08/04`**: 🚀 Our [gradio demo](https://fastfit.lavieai.com) is online with Chinese & English support!  The code of the demo is also released in [app.py](app.py).
 - **`2025/07/03`**: 🎉 We release the weights of [FastFit-MR](https://huggingface.co/zhengchong/FastFit-MR-1024) and [FastFit-SR](https://huggingface.co/zhengchong/FastFit-SR-1024) model on Hugging Face!
-- **`2025/06/24`**: 📷 We release [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) dataset with **28K+ Multi-reference virtual try-on Samples** on Hugging Face!
+- **`2025/06/24`**: 👕 We release [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) dataset with **28K+ Multi-reference virtual try-on Samples** on Hugging Face!
 
 ## Installation
 
