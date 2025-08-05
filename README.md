@@ -35,6 +35,21 @@ FastFit is a diffusion-based framework optimized for **high-speed**, **multi-ref
 - **`2025/07/03`**: 🎉 We release the weights of [FastFit-MR](https://huggingface.co/zhengchong/FastFit-MR-1024) and [FastFit-SR](https://huggingface.co/zhengchong/FastFit-SR-1024) model on Hugging Face!
 - **`2025/06/24`**: 👕 We release [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) dataset with **28K+ Multi-reference virtual try-on Samples** on Hugging Face!
 
+
+## DressCode-MR Dataset
+
+<div align="center">
+  <img src="assets/img/dataset.png" alt="DressCode-MR Dataset" width="800">
+</div>
+[DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR) is constructed based on the [DressCode](https://github.com/aimagelab/dress-code) dataset with **28K+ Multi-reference virtual try-on Samples**.
+
+- Multi-reference Samples: Each sample comprises a person's image paired with a set of compatible clothing and accessory items: tops, bottoms, dresses, shoes, and bags.
+- Large Scale: Contains a total of 28,179 high-quality multi-reference samples with 25,779 for training and 2,400 for testing.
+
+DressCode-MR is released under the exact same license as the original DressCode dataset. Therefore, before requesting access to DressCode-MR dataset, you must be granted a license to use the DressCode dataset. 
+When applying for DressCode-MR, you must use your educational/academic email address (e.g., one ending in .edu, .ac, etc.). Any requests from non-academic email addresses will be rejected.
+By submitting a request, you agree to read and abide by the terms of the DressCode dataset's license.
+
 ## Installation
 
 ```bash
