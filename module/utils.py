@@ -5,7 +5,8 @@ import torch
 import numpy as np
 from PIL import Image
 import inspect
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Set
+from tqdm import tqdm
 
 def prepare_extra_step_kwargs(noise_scheduler, generator, eta):
     # prepare extra kwargs for the scheduler step, since not all schedulers have the same signature
@@ -134,6 +135,18 @@ def numpy_to_pil(images):
 
     return pil_images
 
+def scan_files_in_dir(directory, postfix: Set[str] = None, progress_bar: tqdm = None) -> list:
+    file_list = []
+    progress_bar = tqdm(total=0, desc="Scanning", ncols=100) if progress_bar is None else progress_bar
+    for entry in os.scandir(directory):
+        if entry.is_file():
+            if postfix is None or os.path.splitext(entry.path)[1] in postfix:
+                file_list.append(entry)
+                progress_bar.total += 1
+                progress_bar.update(1)
+        elif entry.is_dir():
+            file_list += scan_files_in_dir(entry.path, postfix=postfix, progress_bar=progress_bar)
+    return file_list
 
 def compute_dream_and_update_latents(
     unet,
