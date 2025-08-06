@@ -78,8 +78,6 @@ pip install huggingface-hub==0.30.0  # to resolve the version conflict
 4.  Restart ComfyUI.
 5.  Drag and drop the `FastFit.json` file from the [release page](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui) onto the ComfyUI web interface.
 
-
-
 ## Gradio Demo
 
 The model weights will be automatically downloaded from Hugging Face when you run the demo.
@@ -87,6 +85,36 @@ The model weights will be automatically downloaded from Hugging Face when you ru
 ```bash
 python app.py
 ```
+
+## Inference & Evaluation on Datasets
+
+You can use the `infer_datasets.py` script to run inference on the DressCode-MR, DressCode, and VITON-HD datasets.
+
+```bash
+python infer_datasets.py \
+    --dataset dresscode-mr||dresscode||viton-hd \
+    --data_dir YOUR_DATA_DIR_PATH_TO_DATASET \
+    --batch_size 4 \
+    --num_inference_steps 50 \
+    --guidance_scale 2.5 \
+    --mixed_precision bf16
+```
+
+Results will be saved in the `results` directory under the project root.
+
+After inference, you can use the `eval.py` script to evaluate the results:
+
+```bash
+python eval.py \
+    --gt_folder YOUR_DATA_DIR_PATH_TO_GT_FOLDER \
+    --pred_folder YOUR_DATA_DIR_PATH_TO_PRED_FOLDER \
+    --paired \
+    --batch_size 16 \
+    --num_workers 4
+```
+
+Remove `--paired` option if you are not evaluating the unpaired results.
+
 <!-- ## Citation
 
 ```bibtex

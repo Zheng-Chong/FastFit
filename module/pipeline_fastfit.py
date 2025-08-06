@@ -1,9 +1,8 @@
-# Copyright 2025 The FastFit Project Contributors. All rights reserved.
-# 
-# This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 
-# International License. To view a copy of this license, visit 
-# http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to 
-# Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+# Copyright 2025 LavieAI(https://lavieai.com). All rights reserved.
+#
+# This work is licensed under the FastFit Non-Commercial License v1.0.0.
+# To view a copy of this license, visit
+# https://github.com/Zheng-Chong/FastFit?tab=License-1-ov-file
 # 
 # You are free to:
 # - Share: copy and redistribute the material in any medium or format
@@ -87,6 +86,7 @@ class FastFitPipeline:
             torch.set_float32_matmul_precision("high")
             torch.backends.cuda.matmul.allow_tf32 = True
 
+
     @torch.no_grad()
     def __call__(
         self, 
@@ -134,9 +134,18 @@ class FastFitPipeline:
         if pose is not None:
             pose = prepare_image(pose, self.device, self.weight_dtype, do_normalize=False)
         masked_person = person * (1 - mask) + mask * pose if pose is not None else person * (1 - mask)
+        if ref_attention_masks is not None:
+            if isinstance(ref_attention_masks[0], int):
+                ref_attention_masks = [torch.tensor([ref_attn_mask]).to(self.device) for ref_attn_mask in ref_attention_masks]
+            else:
+                ref_attention_masks = [ref_attn_mask.to(self.device) for ref_attn_mask in ref_attention_masks]
+        if ref_labels is not None:
+            if isinstance(ref_labels[0], int):
+                ref_labels = [torch.tensor([ref_label]).to(self.device) for ref_label in ref_labels]
+            else:
+                ref_labels = [ref_label.to(self.device) for ref_label in ref_labels]
         
-        
-        # 计时
+        # Timing
         start_time = time.time()
         # Compute latent representations
         masked_person_latent = self.vae.encode(masked_person).latent_dist.sample() * self.vae.config.scaling_factor
@@ -146,7 +155,6 @@ class FastFitPipeline:
             size=masked_person_latent.shape[-2:],
             mode="nearest",
         ).to(self.weight_dtype)
-        
         
         # Prepare noise & timesteps
         noise = randn_tensor(
@@ -167,9 +175,9 @@ class FastFitPipeline:
             masked_person_latent = torch.cat([masked_person_latent] * 2)
             ref_images_latent = [torch.cat([torch.zeros_like(image), image]) for image in ref_images_latent]
             if ref_attention_masks is not None:
-                ref_attention_masks = [torch.tensor([ref_attn_mask] * 2).to(self.device) for ref_attn_mask in ref_attention_masks]
+                ref_attention_masks = [torch.cat([ref_attn_mask] * 2) for ref_attn_mask in ref_attention_masks]
             if ref_labels is not None:
-                ref_labels = [torch.tensor([ref_label] * 2).to(self.device) for ref_label in ref_labels]
+                ref_labels = [torch.cat([ref_label] * 2) for ref_label in ref_labels]
         else:
             if ref_attention_masks is not None:
                 ref_attention_masks = [torch.tensor([ref_attn_mask]).to(self.device) for ref_attn_mask in ref_attention_masks]
