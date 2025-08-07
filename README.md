@@ -100,7 +100,6 @@ python infer_datasets.py \
     --mixed_precision bf16 \
     --paired
 ```
-Arguments:
 
 - `--dataset`: Specify the target dataset. Choose from `dresscode-mr`, `dresscode`, or `viton-hd`.
 
@@ -110,6 +109,7 @@ Arguments:
 
 By default, inference results will be saved to the `results/` directory at the project root.
 
+---
 
 After inference, use the `eval.py` script to ecalculate the evaluation metrics:
 
@@ -121,7 +121,6 @@ python eval.py \
     --batch_size 16 \
     --num_workers 4
 ```
-Arguments:
 
 - `--gt_folder`: The directory path containing the ground truth images.
 
