@@ -3,17 +3,17 @@ import json
 import os
 from pathlib import Path
 from typing import Optional, Union
-from tqdm import tqdm
 
 import numpy as np
 import torch
 from PIL import Image
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.transforms.transforms import F
+from tqdm import tqdm
 
-from parse_utils.automasker import cloth_agnostic_mask, multi_ref_cloth_agnostic_mask
 from module.pipeline_fastfit import FastFitPipeline
+from parse_utils.automasker import cloth_agnostic_mask, multi_ref_cloth_agnostic_mask
 
 # --- Helper Function ---
 
@@ -65,7 +65,7 @@ class DressCodeMRDataset(Dataset):
         data_dir (str): The root directory of the dataset.
     """
 
-    def __init__(self, data_dir: str):
+    def __init__(self, data_dir: str, paired: bool = True):
         self.data_dir = data_dir
         self.transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
@@ -84,7 +84,9 @@ class DressCodeMRDataset(Dataset):
 
         # Load the data
         self.data = []
-        data_jsonl = os.path.join(self.data_dir, "test.jsonl")
+        data_jsonl = os.path.join(
+            self.data_dir, "test.jsonl" if paired else "test_unpair.jsonl"
+        )
         if not os.path.exists(data_jsonl):
             raise FileNotFoundError(
                 f"File {data_jsonl} not found, please download from https://huggingface.co/datasets/zhengchong/DressCode-MR/tree/main and put it in {self.data_dir}."
@@ -223,7 +225,9 @@ class DressCodeMRDataset(Dataset):
             )
             ann_path = root / ann_filename
             if ann_path.exists():
-                img_pil = self._load_image(ann_path, width=self.size[1], height=self.size[0])
+                img_pil = self._load_image(
+                    ann_path, width=self.size[1], height=self.size[0]
+                )
                 return np.array(img_pil)
             return np.zeros((self.size[0], self.size[1], 3), dtype=np.uint8)
 
@@ -238,26 +242,163 @@ class DressCodeMRDataset(Dataset):
             "pixel_values": person_img,
             "masks": person_mask,
             "poses": dwpose_img,
-            "ref_images": ref_images,  # List   
+            "ref_images": ref_images,  # List
             "ref_attention_masks": ref_attention_masks,  # List
             "ref_labels": ref_labels,  # List
         }
 
 
-# class DressCodeDataset(Dataset):
-#     def __init__(self, data_dir: str):
-#         self.data_dir = data_dir
-#         self.transform = transforms.Compose(
-#             [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
-#         )
+class DressCodeDataset(DressCodeMRDataset):
+    def __init__(self, data_dir: str, paired: bool = True):
+        self.data_dir = data_dir
+        self.transform = transforms.Compose(
+            [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
+        )
+
+        self.size = (1024, 768)
+        self.ref_resolution = (1024, 768)
+        self.ref_labels = {"upper": 0, "lower": 1, "overall": 2}
+        # Load the data
+        self.data = []
+        data_txt = os.path.join(self.data_dir, "test_pairs_unpaired.txt")
+        if not os.path.exists(data_txt):
+            raise FileNotFoundError(f"File {data_txt} not found.")
+
+        with open(data_txt, "r") as f:
+            for line in f:
+                # 1048404_0.png 048404_1.png upper
+                person, cloth, category = line.strip().split(" ")
+                if paired:
+                    cloth = person.replace("0.jpg", "1.jpg")
+                if category == "dresses":
+                    category = "overall"
+                self.data.append(
+                    {
+                        "root": str(self.data_dir),
+                        "person": os.path.join("person", person),
+                        "cloth": os.path.join("cloth", cloth),
+                        "category": self.ref_labels[category],
+                    }
+                )
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        sample = self.data[idx]
+        root = Path(sample["root"])
+
+        # --- 1. Load Person Image ---
+        person_path = root / sample["person"]
+        person_img_pil = self._load_image(person_path)
+        person_img = self.transform(person_img_pil)
+
+        # --- 2. Load Cloth Image ---
+        cloth_path = root / sample["cloth"]
+        cloth_img_pil = self._load_image(cloth_path)
+        cloth_img = self.transform(cloth_img_pil)
+
+        # --- 3. Load Pose Image ---
+        openpose_file = (
+            sample["person"].replace("person", "dwpose").rsplit(".", 1)[0] + ".png"
+        )
+        openpose_path = root / openpose_file
+        openpose_img_pil = self._load_image(openpose_path)
+        openpose_img = self.transform(openpose_img_pil)
+        openpose_img = openpose_img * 0.5 + 0.5
+
+        # --- 4. Load Mask ---
+        mask_path = os.path.join(
+            root, sample["person"].replace("person", "mask").rsplit(".", 1)[0] + ".png"
+        )
+        mask_img_pil = self._load_image(mask_path)
+        mask_img = self.transform(mask_img_pil)
+        mask_img = mask_img * 0.5 + 0.5
+
+        # --- 5. Return the Sample ---
+        return {
+            "file_names": os.path.basename(sample["person"]),
+            "pixel_values": person_img,
+            "masks": mask_img,
+            "poses": openpose_img,
+            "ref_images": [cloth_img],
+            "ref_attention_masks": [1],
+            "ref_labels": [sample["category"]],
+        }
 
 
-# class VitonHDDataset(Dataset):
-#     def __init__(self, data_dir: str):
-#         self.data_dir = data_dir
-#         self.transform = transforms.Compose(
-#             [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
-#         )
+class VitonHDDataset(DressCodeMRDataset):
+    def __init__(self, data_dir: str, paired: bool = True):
+        self.data_dir = data_dir
+        self.transform = transforms.Compose(
+            [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
+        )
+        self.size = (1024, 768)
+        self.ref_resolution = (1024, 768)
+
+        # Load the data
+        self.data = []
+        data_txt = os.path.join(
+            self.data_dir, "test_pairs.txt" if paired else "test_unpairs.txt"
+        )
+        if not os.path.exists(data_txt):
+            raise FileNotFoundError(f"File {data_txt} not found.")
+
+        with open(data_txt, "r") as f:
+            for line in f:
+                # 12544_00.jpg 14193_00.jpg
+                person, cloth = line.strip().split(" ")
+                self.data.append(
+                    {
+                        "root": str(self.data_dir),
+                        "person": os.path.join("test", "image", person),
+                        "cloth": os.path.join("test", "cloth", cloth),
+                    }
+                )
+
+    def __getitem__(self, idx):
+        sample = self.data[idx]
+        root = Path(sample["root"])
+
+        # --- 1. Load Person Image ---
+        person_path = root / sample["person"]
+        person_img_pil = self._load_image(person_path)
+        person_img = self.transform(person_img_pil)
+
+        # --- 2. Load Cloth Image ---
+        cloth_path = root / sample["cloth"]
+        cloth_img_pil = self._load_image(cloth_path)
+        cloth_img = self.transform(cloth_img_pil)
+
+        # --- 3. Load Pose Image ---
+        openpose_file = (
+            sample["person"].replace("image", "dwpose").rsplit(".", 1)[0] + ".png"
+        )
+        openpose_path = root / openpose_file
+        openpose_img_pil = self._load_image(openpose_path)
+        openpose_img = self.transform(openpose_img_pil)
+        openpose_img = openpose_img * 0.5 + 0.5
+
+        # --- 4. Load Mask ---
+        mask_path = os.path.join(
+            root,
+            sample["person"].replace("image", "agnostic-mask-catvton").rsplit(".", 1)[0]
+            + ".png",
+        )
+        mask_img_pil = self._load_image(mask_path)
+        mask_img = self.transform(mask_img_pil)
+        mask_img = mask_img * 0.5 + 0.5
+
+        # --- 5. Return the Sample ---
+        return {
+            "file_names": os.path.basename(sample["person"]),
+            "pixel_values": person_img,
+            "masks": mask_img,
+            "poses": openpose_img,
+            "ref_images": [cloth_img],
+            "ref_attention_masks": [1],
+            "ref_labels": [0],
+        }
 
 
 # --- Inference ---
@@ -272,11 +413,14 @@ def parse_args():
         choices=["dresscode-mr", "dresscode", "viton-hd"],
     )
     parser.add_argument("--data_dir", type=str, required=True)
+    parser.add_argument("--paired", action="store_true")
     parser.add_argument("--output_dir", type=str, default="results")
-    parser.add_argument("--batch_size", type=int, default=2)
+    parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--num_inference_steps", type=int, default=50)
     parser.add_argument("--guidance_scale", type=float, default=2.5)
-    parser.add_argument("--mixed_precision", type=str, default="bf16", choices=["fp16", "bf16", "fp32"])
+    parser.add_argument(
+        "--mixed_precision", type=str, default="bf16", choices=["fp16", "bf16", "fp32"]
+    )
     return parser.parse_args()
 
 
@@ -284,7 +428,9 @@ def main():
     args = parse_args()
 
     # --- Prepare the Dataset and Pipeline ---
-    args.output_dir = os.path.join(args.output_dir, args.dataset)
+    args.output_dir = os.path.join(
+        args.output_dir, args.dataset, "paired" if args.paired else "unpaired"
+    )
     os.makedirs(args.output_dir, exist_ok=True)
     if args.dataset == "dresscode-mr":
         dataset = DressCodeMRDataset(args.data_dir)
@@ -293,22 +439,24 @@ def main():
             mixed_precision=args.mixed_precision,
             allow_tf32=True,
         )
-    # elif args.dataset == "dresscode":
-    #     dataset = DressCodeDataset(args.data_dir)
-    #     pipeline = FastFitPipeline(
-    #         base_model_path="zhengchong/FastFit-SR-1024",
-    #         mixed_precision=args.mixed_precision,
-    #         allow_tf32=True,
-    #     )
-    # elif args.dataset == "viton-hd":
-    #     dataset = VitonHDDataset(args.data_dir)
-    #     pipeline = FastFitPipeline(
-    #         base_model_path="zhengchong/FastFit-SR-1024",
-    #         mixed_precision=args.mixed_precision,
-    #         allow_tf32=True,
-    #     )
+    elif args.dataset == "dresscode":
+        dataset = DressCodeDataset(args.data_dir, paired=args.paired)
+        pipeline = FastFitPipeline(
+            base_model_path="zhengchong/FastFit-SR-1024",
+            mixed_precision=args.mixed_precision,
+            allow_tf32=True,
+        )
+    elif args.dataset == "viton-hd":
+        dataset = VitonHDDataset(args.data_dir, paired=args.paired)
+        pipeline = FastFitPipeline(
+            base_model_path="zhengchong/FastFit-SR-1024",
+            mixed_precision=args.mixed_precision,
+            allow_tf32=True,
+        )
     else:
-        raise ValueError(f"Invalid dataset: {args.dataset}, for now only support `dresscode-mr`")
+        raise ValueError(
+            f"Invalid dataset: {args.dataset}, for now only support `dresscode-mr`"
+        )
 
     # --- Inference ---
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False)

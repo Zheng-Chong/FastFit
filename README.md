@@ -88,32 +88,46 @@ python app.py
 
 ## Inference & Evaluation on Datasets
 
-You can use the `infer_datasets.py` script to run inference on the DressCode-MR, DressCode, and VITON-HD datasets.
+To perform inference on the DressCode-MR, DressCode, or VITON-HD datasets, use the `infer_datasets.py` script, for example:
 
 ```bash
 python infer_datasets.py \
-    --dataset dresscode-mr||dresscode||viton-hd \
-    --data_dir YOUR_DATA_DIR_PATH_TO_DATASET \
+    --dataset <dataset_name> \
+    --data_dir </path/to/your/dataset> \
     --batch_size 4 \
     --num_inference_steps 50 \
     --guidance_scale 2.5 \
-    --mixed_precision bf16
+    --mixed_precision bf16 \
+    --paired
 ```
+Arguments:
 
-Results will be saved in the `results` directory under the project root.
+- `--dataset`: Specify the target dataset. Choose from `dresscode-mr`, `dresscode`, or `viton-hd`.
 
-After inference, you can use the `eval.py` script to evaluate the results:
+- `--data_dir`: The root directory path for the specified dataset.
+
+- `--paired`: Include this flag to run inference in the paired setting. Omit this flag for the unpaired setting.
+
+By default, inference results will be saved to the `results/` directory at the project root.
+
+
+After inference, use the `eval.py` script to ecalculate the evaluation metrics:
 
 ```bash
 python eval.py \
-    --gt_folder YOUR_DATA_DIR_PATH_TO_GT_FOLDER \
-    --pred_folder YOUR_DATA_DIR_PATH_TO_PRED_FOLDER \
+    --gt_folder </path/to/ground_truth_folder> \
+    --pred_folder </path/to/prediction_folder> \
     --paired \
     --batch_size 16 \
     --num_workers 4
 ```
+Arguments:
 
-Remove `--paired` option if you are not evaluating the unpaired results.
+- `--gt_folder`: The directory path containing the ground truth images.
+
+- `--pred_folder`: The directory path containing the generated (predicted) images from the inference step.
+
+- `--paired`: Include this flag to evaluate results from the paired setting. Omit this flag for the unpaired setting.
 
 <!-- ## Citation
 
