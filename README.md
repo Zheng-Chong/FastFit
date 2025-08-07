@@ -139,4 +139,4 @@ Our code is modified based on [Diffusers](https://github.com/huggingface/diffuse
 
 ## License
 
-All weights, parameters, and code related to FastFit are governed by the [FastFit Non-Commercial License](https://github.com/Zheng-Chong/FastFit/tree/main). For commercial licensing, please visit [LavieAI](https://lavieai.com/) or [LoomlyAI](https://www.loomlyai.com/en).
+All weights, parameters, and code related to FastFit are governed by the [FastFit Non-Commercial License](https://github.com/Zheng-Chong/FastFit/tree/main). For commercial collaboration, please contact [LavieAI](https://lavieai.com/) or [LoomlyAI](https://www.loomlyai.com/en).
