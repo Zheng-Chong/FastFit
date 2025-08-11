@@ -59,7 +59,7 @@ DressCode-MR is released under the exact same license as the original DressCode 
 conda create -n fastfit python=3.10
 conda activate fastfit
 pip install -r requirements.txt
-pip install huggingface-hub==0.30.0  # to resolve the version conflict
+pip install easy-dwpose --no-dependencies # to resolve the version conflict
 ```
 
 ## ComfyUI Workflow

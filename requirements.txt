@@ -11,3 +11,4 @@ fvcore
 cloudpickle
 pycocotools
 av
+huggingface-hub
