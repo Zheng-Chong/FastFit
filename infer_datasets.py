@@ -63,10 +63,13 @@ class DressCodeMRDataset(Dataset):
 
     Args:
         data_dir (str): The root directory of the dataset.
+        output_dir (str): The output directory to check for existing results.
+        paired (bool): Whether to use paired or unpaired data.
     """
 
-    def __init__(self, data_dir: str, paired: bool = True):
+    def __init__(self, data_dir: str, output_dir: str = None, paired: bool = True):
         self.data_dir = data_dir
+        self.output_dir = output_dir
         self.transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
         )
@@ -102,6 +105,14 @@ class DressCodeMRDataset(Dataset):
                 }
                 if not references:
                     continue
+                
+                # Check if output already exists
+                if self.output_dir:
+                    output_filename = os.path.basename(record["person"])
+                    output_path = os.path.join(self.output_dir, output_filename)
+                    if os.path.exists(output_path):
+                        continue  # Skip if already generated
+                
                 self.data.append(
                     {
                         "root": str(self.data_dir),
@@ -249,8 +260,9 @@ class DressCodeMRDataset(Dataset):
 
 
 class DressCodeDataset(DressCodeMRDataset):
-    def __init__(self, data_dir: str, paired: bool = True):
+    def __init__(self, data_dir: str, output_dir: str = None, paired: bool = True):
         self.data_dir = data_dir
+        self.output_dir = output_dir
         self.transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
         )
@@ -272,6 +284,14 @@ class DressCodeDataset(DressCodeMRDataset):
                     cloth = person.replace("0.jpg", "1.jpg")
                 if category == "dresses":
                     category = "overall"
+                
+                # Check if output already exists
+                if self.output_dir:
+                    output_filename = os.path.basename(person)
+                    output_path = os.path.join(self.output_dir, output_filename)
+                    if os.path.exists(output_path):
+                        continue  # Skip if already generated
+                
                 self.data.append(
                     {
                         "root": str(self.data_dir),
@@ -328,8 +348,9 @@ class DressCodeDataset(DressCodeMRDataset):
 
 
 class VitonHDDataset(DressCodeMRDataset):
-    def __init__(self, data_dir: str, paired: bool = True):
+    def __init__(self, data_dir: str, output_dir: str = None, paired: bool = True):
         self.data_dir = data_dir
+        self.output_dir = output_dir
         self.transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
         )
@@ -348,6 +369,14 @@ class VitonHDDataset(DressCodeMRDataset):
             for line in f:
                 # 12544_00.jpg 14193_00.jpg
                 person, cloth = line.strip().split(" ")
+                
+                # Check if output already exists
+                if self.output_dir:
+                    output_filename = os.path.basename(person)
+                    output_path = os.path.join(self.output_dir, output_filename)
+                    if os.path.exists(output_path):
+                        continue  # Skip if already generated
+                
                 self.data.append(
                     {
                         "root": str(self.data_dir),
@@ -421,7 +450,32 @@ def parse_args():
     parser.add_argument(
         "--mixed_precision", type=str, default="bf16", choices=["fp16", "bf16", "fp32"]
     )
+    parser.add_argument("--show_skipped", action="store_true", help="Show information about skipped images")
     return parser.parse_args()
+
+
+def count_existing_outputs(output_dir: str) -> int:
+    """Count the number of existing output files in the output directory."""
+    if not os.path.exists(output_dir):
+        return 0
+    
+    count = 0
+    for file in os.listdir(output_dir):
+        if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+            count += 1
+    return count
+
+
+def get_existing_outputs(output_dir: str) -> list:
+    """Get the list of existing output filenames in the output directory."""
+    if not os.path.exists(output_dir):
+        return []
+    
+    existing_files = []
+    for file in os.listdir(output_dir):
+        if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+            existing_files.append(file)
+    return sorted(existing_files)
 
 
 def main():
@@ -432,22 +486,29 @@ def main():
         args.output_dir, args.dataset, "paired" if args.paired else "unpaired"
     )
     os.makedirs(args.output_dir, exist_ok=True)
+    
+    # Count existing outputs
+    existing_count = count_existing_outputs(args.output_dir)
+    
+    print(f"Output directory: {args.output_dir}")
+    print(f"Existing outputs: {existing_count} images")
+    
     if args.dataset == "dresscode-mr":
-        dataset = DressCodeMRDataset(args.data_dir)
+        dataset = DressCodeMRDataset(args.data_dir, output_dir=args.output_dir)
         pipeline = FastFitPipeline(
             base_model_path="zhengchong/FastFit-MR-1024",
             mixed_precision=args.mixed_precision,
             allow_tf32=True,
         )
     elif args.dataset == "dresscode":
-        dataset = DressCodeDataset(args.data_dir, paired=args.paired)
+        dataset = DressCodeDataset(args.data_dir, output_dir=args.output_dir, paired=args.paired)
         pipeline = FastFitPipeline(
             base_model_path="zhengchong/FastFit-SR-1024",
             mixed_precision=args.mixed_precision,
             allow_tf32=True,
         )
     elif args.dataset == "viton-hd":
-        dataset = VitonHDDataset(args.data_dir, paired=args.paired)
+        dataset = VitonHDDataset(args.data_dir, output_dir=args.output_dir, paired=args.paired)
         pipeline = FastFitPipeline(
             base_model_path="zhengchong/FastFit-SR-1024",
             mixed_precision=args.mixed_precision,
@@ -457,27 +518,53 @@ def main():
         raise ValueError(
             f"Invalid dataset: {args.dataset}, for now only support `dresscode-mr`"
         )
+    
+    print(f"Dataset loaded with {len(dataset)} samples to process")
+    if args.show_skipped:
+        print(f"Skipped {existing_count} already generated images")
+        if existing_count > 0:
+            existing_files = get_existing_outputs(args.output_dir)
+            print("Skipped images:")
+            for i, filename in enumerate(existing_files[:10]):  # Show first 10
+                print(f"  {filename}")
+            if existing_count > 10:
+                print(f"  ... and {existing_count - 10} more")
+    if len(dataset) == 0:
+        print("All images have already been generated. Exiting.")
+        return
 
     # --- Inference ---
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
-    for sample in tqdm(dataloader):
-        image = pipeline(
-            person=sample["pixel_values"],
-            mask=sample["masks"],
-            ref_images=sample["ref_images"],
-            ref_labels=sample["ref_labels"],
-            ref_attention_masks=sample["ref_attention_masks"],
-            pose=sample["poses"],
-            num_inference_steps=args.num_inference_steps,
-            guidance_scale=args.guidance_scale,
-            generator=torch.Generator(device=pipeline.device),
-            cross_attention_kwargs=None,
-        )
+    
+    processed_count = 0
+    skipped_count = 0
+    
+    print(f"Starting inference with {len(dataset)} samples...")
+    for sample in tqdm(dataloader, desc="Processing images"):
+        try:
+            image = pipeline(
+                person=sample["pixel_values"],
+                mask=sample["masks"],
+                ref_images=sample["ref_images"],
+                ref_labels=sample["ref_labels"],
+                ref_attention_masks=sample["ref_attention_masks"],
+                pose=sample["poses"],
+                num_inference_steps=args.num_inference_steps,
+                guidance_scale=args.guidance_scale,
+                generator=torch.Generator(device=pipeline.device),
+                cross_attention_kwargs=None,
+            )
 
-        # --- Save the Result ---
-        for i, image in enumerate(image):
-            image.save(os.path.join(args.output_dir, f"{sample['file_names'][i]}"))
-
+            # --- Save the Result ---
+            for i, image in enumerate(image):
+                output_path = os.path.join(args.output_dir, f"{sample['file_names'][i]}")
+                image.save(output_path)
+                processed_count += 1
+                
+        except Exception as e:
+            print(f"Error processing {sample['file_names']}: {e}")
+            skipped_count += 1
+            continue
 
 if __name__ == "__main__":
     main()

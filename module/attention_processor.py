@@ -102,6 +102,7 @@ class OptimizedAttentionCache:
     def set_postfix(self, key: torch.Tensor, value: torch.Tensor, attention_mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]]:
         """Set postfix for cache."""
         seq_len = key.shape[2]
+
         self.cached_keys[:, :, self.current_len:self.current_len + seq_len] = key
         self.cached_values[:, :, self.current_len:self.current_len + seq_len] = value
         if attention_mask is not None:
@@ -1153,7 +1154,7 @@ class AttnProcessor2_0:
             # --- 1. Lazy Initialization of Cache ---
             # Only create cache object when first used
             if self.kv_cache is None:
-                self.max_seq_len = sequence_length * 5  # Cache length is 5 times the sequence length
+                self.max_seq_len = sequence_length * 10  # Cache length is 5 times the sequence length
                 self.kv_cache = OptimizedAttentionCache(
                     batch_size=batch_size,
                     num_heads=attn.heads,
@@ -1291,7 +1292,7 @@ class FusedAttnProcessor2_0:
             # --- 1. Lazy Initialization of Cache ---
             # Only create cache object when first used
             if self.kv_cache is None:
-                self.max_seq_len = sequence_length * 8  # Cache length is 5 times the sequence length
+                self.max_seq_len = sequence_length * 10  # Cache length is 5 times the sequence length
                 self.kv_cache = OptimizedAttentionCache(
                     batch_size=batch_size,
                     num_heads=attn.heads,
