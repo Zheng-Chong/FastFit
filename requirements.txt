@@ -1,6 +1,6 @@
 torch
 torchvision
-easy_dwpose
+# easy_dwpose
 diffusers 
 transformers 
 gradio
@@ -12,3 +12,4 @@ cloudpickle
 pycocotools
 av
 huggingface-hub
+pillow

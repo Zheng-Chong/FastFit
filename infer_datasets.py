@@ -445,7 +445,7 @@ def parse_args():
     parser.add_argument("--paired", action="store_true")
     parser.add_argument("--output_dir", type=str, default="results")
     parser.add_argument("--batch_size", type=int, default=1)
-    parser.add_argument("--num_inference_steps", type=int, default=50)
+    parser.add_argument("--num_inference_steps", type=int, default=30)
     parser.add_argument("--guidance_scale", type=float, default=2.5)
     parser.add_argument(
         "--mixed_precision", type=str, default="bf16", choices=["fp16", "bf16", "fp32"]
@@ -494,7 +494,7 @@ def main():
     print(f"Existing outputs: {existing_count} images")
     
     if args.dataset == "dresscode-mr":
-        dataset = DressCodeMRDataset(args.data_dir, output_dir=args.output_dir)
+        dataset = DressCodeMRDataset(args.data_dir, output_dir=args.output_dir, paired=args.paired)
         pipeline = FastFitPipeline(
             base_model_path="zhengchong/FastFit-MR-1024",
             mixed_precision=args.mixed_precision,

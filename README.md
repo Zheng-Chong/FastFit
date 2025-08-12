@@ -60,6 +60,9 @@ conda create -n fastfit python=3.10
 conda activate fastfit
 pip install -r requirements.txt
 pip install easy-dwpose --no-dependencies # to resolve the version conflict
+
+# if error occurs for av, try:
+conda install -c conda-forge av
 ```
 
 ## ComfyUI Workflow
@@ -74,7 +77,10 @@ pip install easy-dwpose --no-dependencies # to resolve the version conflict
     ```bash
     cd  Your_ComfyUI_Dir/custom_nodes/FastFit
     pip install -r requirements.txt
-    pip install huggingface-hub==0.30.0  # to resolve the version conflict
+    pip install easy-dwpose --no-dependencies # to resolve the version conflict
+
+    # if error occurs for av, try:
+    conda install -c conda-forge av
     ```
 4.  Restart ComfyUI.
 5.  Drag and drop the `FastFit.json` file from the [release page](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui) onto the ComfyUI web interface.
