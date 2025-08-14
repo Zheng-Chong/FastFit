@@ -5,8 +5,8 @@
 
 
  <div align="center">
-  <a href="https://github.com/Zheng-Chong/FastFit" style="margin: 0 2px; text-decoration: none;">
-    <img src='https://img.shields.io/badge/arXiv-TODO-red?style=flat&logo=arXiv&logoColor=red' alt='arxiv'>
+  <a href="https://arxiv.org/abs/2508.20586" style="margin: 0 2px; text-decoration: none;">
+    <img src='https://img.shields.io/badge/arXiv-2508.20586-red?style=flat&logo=arXiv&logoColor=red' alt='arxiv'>
   </a>
   <a href='https://huggingface.co/zhengchong/FastFit-MR-1024' style="margin: 0 2px; text-decoration: none;">
     <img src='https://img.shields.io/badge/Hugging Face-ckpts-orange?style=flat&logo=HuggingFace&logoColor=orange' alt='huggingface'>
@@ -16,9 +16,6 @@
   </a>
   <a href="https://fastfit.lavieai.com" style="margin: 0 2px; text-decoration: none;">
     <img src='https://img.shields.io/badge/Demo-Gradio-gold?style=flat&logo=Gradio&logoColor=red' alt='Demo'>
-  </a>
-  <a href='https://zheng-chong.github.io/FastFit/' style="margin: 0 2px;">
-    <img src='https://img.shields.io/badge/Webpage-Project-silver?style=flat&logo=&logoColor=orange' alt='webpage'>
   </a>
   <a href="https://github.com/Zheng-Chong/FastFit/tree/main" style="margin: 0 2px; text-decoration: none;">
     <img src='https://img.shields.io/badge/License-NonCommercial-lightgreen?style=flat&logo=Lisence' alt='License'>
@@ -30,6 +27,7 @@
 FastFit is a diffusion-based framework optimized for **high-speed**, **multi-reference virtual try-on**. It enables **simultaneous try-on of multiple fashion items**—such as **tops, bottoms, dresses, shoes, and bags**—on a single person. The framework leverages **reference KV caching** during inference to **significantly accelerate generation**.
  
 ## Updates 
+- **`2025/08/29`**: 📄 We release the [arXiv paper](https://arxiv.org/abs/2508.20586) of FastFit!
 - **`2025/08/06`**: ⚙️ We release [the code for inference and evaluation](https://github.com/Zheng-Chong/FastFit/tree/main?tab=readme-ov-file#inference--evaluation-on-datasets) on the [DressCode-MR](https://huggingface.co/datasets/zhengchong/DressCode-MR), [DressCode](https://huggingface.co/datasets/zhengchong/DressCode-Test), and [VITON-HD](https://huggingface.co/datasets/zhengchong/VITON-HD) test datasets.
 - **`2025/08/05`**: 🧩 We release the [ComfyUI workflow](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui) for FastFit!
 - **`2025/08/04`**: 🚀 Our [gradio demo](https://fastfit.lavieai.com) is online with Chinese & English support!  The code of the demo is also released in [app.py](app.py).
