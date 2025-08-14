@@ -26,9 +26,11 @@ from tqdm import tqdm
 from .unet_2d_condition import UNet2DConditionModel
 from .utils import (
     numpy_to_pil,
+    paste_image_back_with_feathering,
     prepare_extra_step_kwargs,
     prepare_image,
     prepare_mask_image,
+    adjust_input_image,
 )
 
 REF_LABEL_MAP = {
@@ -102,6 +104,7 @@ class FastFitPipeline:
         cross_attention_kwargs: Optional[Dict] = None,
         eta: float = 1.0,
         return_pil: bool = True,
+        do_adjust_input_image: bool = False,
     ):
         """
         Execute FastFit inference
@@ -119,21 +122,34 @@ class FastFitPipeline:
             cross_attention_kwargs: Cross attention parameters
             eta: Eta parameter
             return_pil: Whether to return PIL image
-            
+            adjust_input_image: Whether to adjust the input image
         Returns:
             Generated image
         """
+        # Adjust Input Image For Inpainting
+        if do_adjust_input_image:
+            background_img, person_img, mask_img, crop_box = adjust_input_image(
+                person, mask, (768, 1024), 0.05
+            )
+        else:
+            background_img = person
+            person_img = person
+            mask_img = mask
+            crop_box = None
+
         # Map string labels to integers
         if isinstance(ref_labels[0], str):
             ref_labels = [REF_LABEL_MAP[label] for label in ref_labels]
         
         # Convert to tensors
-        person = prepare_image(person, self.device, self.weight_dtype)
-        mask = prepare_mask_image(mask, self.device, self.weight_dtype)
+        person = prepare_image(person_img, self.device, self.weight_dtype)
+        mask = prepare_mask_image(mask_img, self.device, self.weight_dtype)
         ref_images = [prepare_image(image, self.device, self.weight_dtype) for image in ref_images]
         if pose is not None:
+            pose = pose.resize((person_img.size[0], person_img.size[1]))
             pose = prepare_image(pose, self.device, self.weight_dtype, do_normalize=False)
         masked_person = person * (1 - mask) + mask * pose if pose is not None else person * (1 - mask)
+        
         if ref_attention_masks is not None:
             if isinstance(ref_attention_masks[0], int):
                 ref_attention_masks = [torch.tensor([ref_attn_mask]).to(self.device) for ref_attn_mask in ref_attention_masks]
@@ -145,8 +161,6 @@ class FastFitPipeline:
             else:
                 ref_labels = [ref_label.to(self.device) for ref_label in ref_labels]
         
-        # Timing
-        start_time = time.time()
         # Compute latent representations
         masked_person_latent = self.vae.encode(masked_person).latent_dist.sample() * self.vae.config.scaling_factor
         ref_images_latent = [self.vae.encode(image).latent_dist.sample() * self.vae.config.scaling_factor for image in ref_images]
@@ -261,8 +275,6 @@ class FastFitPipeline:
         # VAE Decoding
         latents = (1 / self.vae.config.scaling_factor * latents).to(self.vae.device, dtype=self.vae.dtype)
         image = self.vae.decode(latents).sample
-        end_time = time.time()
-        print(f"Infer Time: {end_time - start_time} seconds")
         
         # repaint the image
         image = image * mask + (1 - mask) * person
@@ -271,5 +283,11 @@ class FastFitPipeline:
             image = (image / 2 + 0.5).clamp(0, 1)
             image = image.cpu().permute(0, 2, 3, 1).float().numpy()
             image = numpy_to_pil(image) 
+
+        if do_adjust_input_image:
+            image, _ = paste_image_back_with_feathering(
+                background_img, image[0], crop_box
+            )
+            image = [image]
 
         return image

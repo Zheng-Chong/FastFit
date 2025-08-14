@@ -3,12 +3,210 @@ from accelerate import Accelerator, DistributedDataParallelKwargs
 from accelerate.utils import ProjectConfiguration
 import torch
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 import PIL
 import inspect
 import math
 from typing import Optional, Tuple, Set, List
 from tqdm import tqdm
+
+
+def paste_image_back_with_feathering(
+    resized_background_image: Image.Image,
+    image_to_paste: Image.Image,
+    crop_box: Tuple[int, int, int, int],
+    feather_radius: int = 50,
+) -> Tuple[Image.Image, Image.Image]:
+    """
+    将一个图像粘贴回背景图的指定位置，并对矩形边缘进行羽化处理以实现平滑融合。
+
+    此版本在内部创建一个矩形遮罩进行羽化，不依赖外部传入的遮罩形状。
+
+    Args:
+        resized_background_image (Image.Image):
+            调整尺寸后的背景图。
+        image_to_paste (Image.Image):
+            需要被粘贴回去的图像。
+        crop_box (Tuple[int, int, int, int]):
+            定义了粘贴区域的坐标 (左, 上, 右, 下)，用于确定粘贴位置和遮罩范围。
+        feather_radius (int, optional):
+            高斯模糊的半径，用于控制羽化边缘的宽度和柔和度。默认为 50。
+
+    Returns:
+        Tuple[Image.Image, Image.Image]:
+            一个元组，包含：
+            - final_image (Image.Image): 经过边缘融合处理后，粘贴了新图像的完整背景图。
+            - feather_mask (Image.Image): 用于合成的全尺寸羽化遮罩。
+    """
+    # 1. 创建一个与背景图同样大小的全尺寸羽化遮罩
+    # 创建一个全黑的遮罩
+    mask = Image.new("L", resized_background_image.size, 0)
+
+    # 在遮罩上，将要粘贴的区域填充为白色 (255)
+    # 这里的 crop_box 定义了白色矩形的位置和大小
+    mask.paste(255, crop_box)
+
+    # 对整个遮罩应用高斯模糊，使白色矩形的边缘变得平滑，形成羽化效果
+    feather_mask = mask.filter(ImageFilter.GaussianBlur(radius=feather_radius))
+
+    # 2. 准备用于合成的两个图像
+    # image1: 背景图上硬性粘贴了目标图像
+    # image2: 原始的背景图
+    image_with_paste = resized_background_image.copy()
+    paste_position = (crop_box[0], crop_box[1])
+    image_with_paste.paste(image_to_paste, paste_position)
+
+    # 3. 使用羽化遮罩合成图像
+    # Image.composite 使用遮罩来混合两个图像。
+    # - 遮罩为白色(255)的区域，使用 image_with_paste 的像素。
+    # - 遮罩为黑色(0)的区域，使用 resized_background_image 的像素。
+    # - 遮罩为灰色(1-254)的区域，按比例混合两者，实现平滑过渡。
+    final_image = Image.composite(
+        image_with_paste, resized_background_image, feather_mask
+    )
+
+    return final_image, feather_mask
+
+
+def get_bounding_box(mask_pil: Image.Image) -> Optional[Tuple[int, int, int, int]]:
+    """
+    根据Mask PIL图像获取非零区域的最小外接矩形。
+
+    Args:
+        mask_pil (Image.Image): 输入的单通道或多通道遮罩图像。
+
+    Returns:
+        Optional[Tuple[int, int, int, int]]:
+            如果遮罩不为空，返回一个元组 (xmin, ymin, xmax, ymax)，
+            代表左上角和右下角的坐标。注意，xmax和ymax是开区间，
+            符合PIL crop等操作的习惯 (即宽度 = xmax - xmin)。
+            如果遮罩为空，则返回 None。
+    """
+    # 确保图像为单通道灰度图，以便进行Numpy操作
+    if mask_pil.mode != "L":
+        mask_pil = mask_pil.convert("L")
+
+    mask_np = np.array(mask_pil)
+
+    # 检查是否存在任何非零像素，避免在空遮罩上操作
+    if not np.any(mask_np > 0):
+        return None  # Mask为空
+
+    # 查找所有包含非零像素的行和列
+    rows = np.any(mask_np > 0, axis=1)
+    cols = np.any(mask_np > 0, axis=0)
+
+    # 获取第一个和最后一个非零行/列的索引，即为边界框的范围
+    ymin, ymax = np.where(rows)[0][[0, -1]]
+    xmin, xmax = np.where(cols)[0][[0, -1]]
+
+    # 返回的坐标格式为 (左, 上, 右, 下)，右和下坐标+1以表示开区间
+    return (int(xmin), int(ymin), int(xmax + 1), int(ymax + 1))
+
+
+def adjust_input_image(
+    image: Image.Image,
+    mask: Image.Image,
+    target_size: Tuple[int, int] = (768, 1024),
+    padding_ratio: float = 0.05,
+) -> Tuple[int, int, Image.Image, Image.Image, Tuple[int, int, int, int]]:
+    """
+    将图像和遮罩根据目标尺寸的宽高比进行调整和裁剪。
+    该函数首先围绕遮罩内容生成一个符合目标宽高比的框，然后添加一些内边距（padding），
+    最后将整个图像缩放并裁剪出这个区域。
+
+    Args:
+        image (Image.Image): 原始图像。
+        mask (Image.Image): 原始遮罩。
+        target_size (Tuple[int, int], optional): (宽度, 高度) 目标输出尺寸。
+            默认为 (768, 1024)。
+        padding_ratio (float, optional): 在调整宽高比后的框周围添加的内边距比例。
+            默认为 0.1。
+
+    Returns:
+        Tuple[Image.Image, Image.Image, Image.Image, Tuple[int, int, int, int]]:
+            - image_new (Image.Image): 缩放后完整图像。
+            - cropped_image (Image.Image): 最终裁剪出的图像。
+            - cropped_mask (Image.Image): 最终裁剪出的遮罩。
+            - crop_box (Tuple[int, int, int, int]): 在缩放后图像上进行裁剪的坐标框。
+    """
+    # 1. 初始化和比例计算
+    img_w, img_h = image.size
+    target_w, target_h = target_size
+    target_ratio = target_w / target_h
+
+    # 2. 获取遮罩内容的原始最小外接矩形
+    bbox = get_bounding_box(mask)
+    if bbox is None:
+        raise ValueError("输入遮罩为空，无法进行调整。")
+    x_min, y_min, x_max, y_max = bbox
+    box_w = x_max - x_min
+    box_h = y_max - y_min
+
+    # 3. 计算理想宽高，使框的宽高比与目标尺寸一致，同时要能完全容纳原始内容
+    #    通过max函数，确保新框的宽/高至少不小于原始框的宽/高
+    ideal_w = max(box_h * target_ratio, box_w)
+    ideal_h = max(box_w / target_ratio, box_h)
+
+    # 4. 计算中心点，并根据理想宽高重新计算框的坐标
+    x_center = (x_min + x_max) / 2
+    y_center = (y_min + y_max) / 2
+    x_min = x_center - ideal_w / 2
+    y_min = y_center - ideal_h / 2
+    x_max = x_center + ideal_w / 2
+    y_max = y_center + ideal_h / 2
+
+    # 5. 计算并添加内边距（padding）
+    #    为防止padding导致框超出原图边界，计算一个允许的最大padding比例
+    #    取 "请求的padding比例" 和 "各方向上允许的最大padding比例" 中的最小值
+    max_padding_ratio = min(padding_ratio, (x_min + img_w - x_max) / (ideal_w * 2), (y_min + img_h - y_max) / (ideal_h * 2))
+    x_padding = int(ideal_w * max_padding_ratio)
+    y_padding = int(ideal_h * max_padding_ratio)
+    x_min = x_min - x_padding
+    y_min = y_min - y_padding
+    x_max = x_max + x_padding
+    y_max = y_max + y_padding
+
+    # 6. 边界检查与校正
+    #    作为安全措施，如果计算出的框仍然超出图像边界，则平移框使其回到边界内
+    if x_min < 0:
+        x_max -= x_min
+        x_min = 0
+    if y_min < 0:
+        y_max -= y_min
+        y_min = 0
+    if x_max > img_w:
+        x_min -= x_max - img_w
+        x_max = img_w
+    if y_max > img_h:
+        y_min -= y_max - img_h
+        y_max = img_h
+
+    # 7. 根据最终确定的框，计算缩放比例并缩放整个图像和遮罩
+    #    缩放比例 = 目标宽度 / 新计算出的框的宽度
+    scale = target_w / (x_max - x_min)
+    img_new_w = int(img_w * scale)
+    img_new_h = int(img_h * scale)
+
+    image_new = image.resize((img_new_w, img_new_h), Image.Resampling.LANCZOS)
+    mask_new = mask.resize((img_new_w, img_new_h), Image.Resampling.NEAREST)
+
+    # 8. 在缩放后的大图上，根据框的位置计算裁剪区域并执行裁剪
+    crop_x_start = int(x_min * scale)
+    crop_y_start = int(y_min * scale)
+    crop_box = (
+        crop_x_start,
+        crop_y_start,
+        crop_x_start + target_w,
+        crop_y_start + target_h,
+    )
+
+    cropped_image = image_new.crop(crop_box)
+    cropped_mask = mask_new.crop(crop_box)
+
+    return image_new, cropped_image, cropped_mask, crop_box
+
+
 
 def prepare_extra_step_kwargs(noise_scheduler, generator, eta):
     # prepare extra kwargs for the scheduler step, since not all schedulers have the same signature
@@ -213,80 +411,6 @@ def compute_dream_and_update_latents(
         raise ValueError(f"Unknown prediction type {noise_scheduler.config.prediction_type}")
 
     return _noisy_latents, _target
-
-# # 准备图像（转换为 Batch 张量）
-# def prepare_image(image):
-#     if isinstance(image, torch.Tensor):
-#         # Batch single image
-#         if image.ndim == 3:
-#             image = image.unsqueeze(0)
-#         image = image.to(dtype=torch.float32)
-#     else:
-#         # preprocess image
-#         if isinstance(image, (PIL.Image.Image, np.ndarray)):
-#             image = [image]
-#         if isinstance(image, list) and isinstance(image[0], PIL.Image.Image):
-#             image = [np.array(i.convert("RGB"))[None, :] for i in image]
-#             image = np.concatenate(image, axis=0)
-#         elif isinstance(image, list) and isinstance(image[0], np.ndarray):
-#             image = np.concatenate([i[None, :] for i in image], axis=0)
-#         image = image.transpose(0, 3, 1, 2)
-#         image = torch.from_numpy(image).to(dtype=torch.float32) / 127.5 - 1.0
-#     return image
-
-
-# def prepare_mask_image(mask_image):
-#     if isinstance(mask_image, torch.Tensor):
-#         if mask_image.ndim == 2:
-#             # Batch and add channel dim for single mask
-#             mask_image = mask_image.unsqueeze(0).unsqueeze(0)
-#         elif mask_image.ndim == 3 and mask_image.shape[0] == 1:
-#             # Single mask, the 0'th dimension is considered to be
-#             # the existing batch size of 1
-#             mask_image = mask_image.unsqueeze(0)
-#         elif mask_image.ndim == 3 and mask_image.shape[0] != 1:
-#             # Batch of mask, the 0'th dimension is considered to be
-#             # the batching dimension
-#             mask_image = mask_image.unsqueeze(1)
-
-#         # Binarize mask
-#         mask_image[mask_image < 0.5] = 0
-#         mask_image[mask_image >= 0.5] = 1
-#     else:
-#         # preprocess mask
-#         if isinstance(mask_image, (PIL.Image.Image, np.ndarray)):
-#             mask_image = [mask_image]
-
-#         if isinstance(mask_image, list) and isinstance(mask_image[0], PIL.Image.Image):
-#             mask_image = np.concatenate(
-#                 [np.array(m.convert("L"))[None, None, :] for m in mask_image], axis=0
-#             )
-#             mask_image = mask_image.astype(np.float32) / 255.0
-#         elif isinstance(mask_image, list) and isinstance(mask_image[0], np.ndarray):
-#             mask_image = np.concatenate([m[None, None, :] for m in mask_image], axis=0)
-
-#         mask_image[mask_image < 0.5] = 0
-#         mask_image[mask_image >= 0.5] = 1
-#         mask_image = torch.from_numpy(mask_image)
-
-#     return mask_image
-
-
-def numpy_to_pil(images):
-    """
-    Convert a numpy image or a batch of images to a PIL image.
-    """
-    if images.ndim == 3:
-        images = images[None, ...]
-    images = (images * 255).round().astype("uint8")
-    if images.shape[-1] == 1:
-        # special case for grayscale (single channel) images
-        pil_images = [Image.fromarray(image.squeeze(), mode="L") for image in images]
-    else:
-        pil_images = [Image.fromarray(image) for image in images]
-
-    return pil_images
-
 
 def tensor_to_image(tensor: torch.Tensor):
     """

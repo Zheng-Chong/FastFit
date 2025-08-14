@@ -171,6 +171,7 @@ class FastFitPipelineNode:
             guidance_scale=guidance_scale,
             generator=gen,
             return_pil=True,
+            do_adjust_input_image=True,
         )[0]
 
         return (to_tensor(result_image).permute(1, 2, 0).unsqueeze(0),)
