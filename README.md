@@ -55,7 +55,7 @@ DressCode-MR is released under the exact same license as the original DressCode 
 
 ## Installation
 
-```bash
+```powershell
 conda create -n fastfit python=3.10
 conda activate fastfit
 pip install -r requirements.txt
@@ -71,19 +71,34 @@ conda install -c conda-forge av
   <img src="assets/img/comfyui.png" alt="ComfyUI Workflow" width="800">
 </div>
 
-1.  Download the `FastFit.zip` file from the [release page](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui).
-2.  Extract the contents of the zip file into your `ComfyUI/custom_nodes/` directory.
-3.  Install the required dependencies following：
-    ```bash
-    cd  Your_ComfyUI_Dir/custom_nodes/FastFit
-    pip install -r requirements.txt
-    pip install easy-dwpose --no-dependencies # to resolve the version conflict
 
-    # if error occurs for av, try:
-    conda install -c conda-forge av
-    ```
-4.  Restart ComfyUI.
-5.  Drag and drop the `FastFit.json` file from the [release page](https://github.com/Zheng-Chong/FastFit/releases/tag/comfyui) onto the ComfyUI web interface.
+1. Clone the FastFit repository into your `ComfyUI/custom_nodes/` directory.
+```powershell
+cd  Your_ComfyUI_Dir/custom_nodes
+git clone https://github.com/Zheng-Chong/FastFit.git
+```
+
+2. Install the required dependencies.
+```powershell
+cd FastFit
+pip install -r requirements.txt
+pip install easy-dwpose --no-dependencies # to resolve the version conflict
+
+# if error occurs for av, try:
+conda install -c conda-forge av
+```
+
+3. Install [rgthree-comfy](https://github.com/rgthree/rgthree-comfy) for image comparer.
+
+```powershell
+cd  Your_ComfyUI_Dir/custom_nodes
+git clone https://github.com/rgthree/rgthree-comfy.git
+cd rgthree-comfy
+pip install -r requirements.txt
+```
+
+4. Restart ComfyUI.
+5. Drag and drop the [fastfit_workflow.json](https://github.com/Zheng-Chong/FastFit/blob/main/assets/fastfit_workflow.json) file onto the ComfyUI web interface.
 
 ## Gradio Demo
 

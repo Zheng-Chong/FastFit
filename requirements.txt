@@ -1,6 +1,5 @@
 torch
 torchvision
-# easy_dwpose
 diffusers 
 transformers 
 gradio
