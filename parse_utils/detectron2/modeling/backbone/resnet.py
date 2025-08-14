@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from parse_utils.detectron2.layers import (
+from ...layers import (
     CNNBlockBase,
     Conv2d,
     DeformConv,

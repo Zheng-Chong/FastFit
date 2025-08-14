@@ -3,7 +3,7 @@
 # pyre-unsafe
 import torch
 
-from parse_utils.densepose.structures.data_relative import DensePoseDataRelative
+from .data_relative import DensePoseDataRelative
 
 
 class DensePoseList:

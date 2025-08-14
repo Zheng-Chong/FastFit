@@ -3,9 +3,9 @@ import logging
 import os
 from fvcore.common.timer import Timer
 
-from parse_utils.detectron2.data import DatasetCatalog, MetadataCatalog
-from parse_utils.detectron2.structures import BoxMode
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...data import DatasetCatalog, MetadataCatalog
+from ...structures import BoxMode
+from ...utils.file_io import PathManager
 
 from .builtin_meta import _get_coco_instances_meta
 from .lvis_v0_5_categories import LVIS_CATEGORIES as LVIS_V0_5_CATEGORIES
@@ -224,10 +224,9 @@ def main() -> None:
     """
     import sys
 
-    import parse_utils.detectron2.data.datasets  # noqa  # add pre-defined metadata
     import numpy as np
-    from parse_utils.detectron2.utils.logger import setup_logger
-    from parse_utils.detectron2.utils.visualizer import Visualizer
+    from ...utils.logger import setup_logger
+    from ...utils.visualizer import Visualizer
     from PIL import Image
 
     logger = setup_logger(name=__name__)

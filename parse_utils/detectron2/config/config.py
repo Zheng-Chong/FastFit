@@ -6,7 +6,7 @@ import inspect
 import logging
 from fvcore.common.config import CfgNode as _CfgNode
 
-from parse_utils.detectron2.utils.file_io import PathManager
+from ..utils.file_io import PathManager
 
 
 class CfgNode(_CfgNode):

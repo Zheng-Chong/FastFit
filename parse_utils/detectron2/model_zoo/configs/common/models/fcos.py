@@ -1,4 +1,4 @@
-from parse_utils.detectron2.modeling.meta_arch.fcos import FCOS, FCOSHead
+from .....modeling.meta_arch.fcos import FCOS, FCOSHead
 
 from .retinanet import model
 

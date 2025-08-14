@@ -1,7 +1,7 @@
-import parse_utils.detectron2.data.transforms as T
-from parse_utils.detectron2.config.lazy import LazyCall as L
-from parse_utils.detectron2.layers.batch_norm import NaiveSyncBatchNorm
-from parse_utils.detectron2.solver import WarmupParamScheduler
+import ....data.transforms as T
+from ....config.lazy import LazyCall as L
+from ....layers.batch_norm import NaiveSyncBatchNorm
+from ....solver import WarmupParamScheduler
 from fvcore.common.param_scheduler import MultiStepParamScheduler
 
 from ..common.data.coco import dataloader

@@ -7,10 +7,10 @@ from typing import Optional, Tuple
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.structures import Instances
+from ....detectron2.config import CfgNode
+from ....detectron2.structures import Instances
 
-from parse_utils.densepose.converters.base import IntTupleBox
+from ...converters.base import IntTupleBox
 
 from .densepose_cse_base import DensePoseCSEBaseSampler
 

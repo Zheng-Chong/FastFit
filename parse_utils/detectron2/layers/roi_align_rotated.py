@@ -4,8 +4,7 @@ from torch import nn
 from torch.autograd import Function
 from torch.autograd.function import once_differentiable
 from torch.nn.modules.utils import _pair
-
-from parse_utils.detectron2.layers.wrappers import disable_torch_compiler
+from .wrappers import disable_torch_compiler
 
 
 class _ROIAlignRotated(Function):

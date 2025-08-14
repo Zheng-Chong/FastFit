@@ -1,7 +1,7 @@
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.modeling import PanopticFPN
-from parse_utils.detectron2.modeling.meta_arch.semantic_seg import SemSegFPNHead
+from .....config import LazyCall as L
+from .....layers import ShapeSpec
+from .....modeling import PanopticFPN
+from .....modeling.meta_arch.semantic_seg import SemSegFPNHead
 
 from .mask_rcnn_fpn import model
 

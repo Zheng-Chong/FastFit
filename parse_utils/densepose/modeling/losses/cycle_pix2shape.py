@@ -7,11 +7,11 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.structures import Instances
+from ....detectron2.config import CfgNode
+from ....detectron2.structures import Instances
 
-from parse_utils.densepose.data.meshes.catalog import MeshCatalog
-from parse_utils.densepose.modeling.cse.utils import normalize_embeddings, squared_euclidean_distance_matrix
+from ....densepose.data.meshes.catalog import MeshCatalog
+from ....densepose.modeling.cse.utils import normalize_embeddings, squared_euclidean_distance_matrix
 
 from .embed_utils import PackedCseAnnotations
 from .mask import extract_data_for_mask_loss_from_matches

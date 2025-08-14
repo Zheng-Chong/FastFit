@@ -2,7 +2,7 @@
 from typing import List
 import torch
 
-from parse_utils.detectron2.layers import nonzero_tuple
+from ..layers import nonzero_tuple
 
 
 # TODO: the name is too general

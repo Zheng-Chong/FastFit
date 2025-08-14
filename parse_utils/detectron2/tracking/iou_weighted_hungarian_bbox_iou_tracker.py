@@ -4,8 +4,8 @@
 import numpy as np
 from typing import List
 
-from parse_utils.detectron2.config import CfgNode as CfgNode_
-from parse_utils.detectron2.config import configurable
+from ..config import CfgNode as CfgNode_
+from ..config import configurable
 
 from .base_tracker import TRACKER_HEADS_REGISTRY
 from .vanilla_hungarian_bbox_iou_tracker import VanillaHungarianBBoxIOUTracker

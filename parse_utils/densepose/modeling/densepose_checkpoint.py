@@ -3,7 +3,7 @@
 # pyre-unsafe
 from collections import OrderedDict
 
-from parse_utils.detectron2.checkpoint import DetectionCheckpointer
+from ...detectron2.checkpoint import DetectionCheckpointer
 
 
 def _rename_HRNet_weights(weights):

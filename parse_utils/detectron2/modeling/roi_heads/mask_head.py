@@ -5,12 +5,12 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import configurable
-from parse_utils.detectron2.layers import Conv2d, ConvTranspose2d, ShapeSpec, cat, get_norm
-from parse_utils.detectron2.layers.wrappers import move_device_like
-from parse_utils.detectron2.structures import Instances
-from parse_utils.detectron2.utils.events import get_event_storage
-from parse_utils.detectron2.utils.registry import Registry
+from ....detectron2.config import configurable
+from ....detectron2.layers import Conv2d, ConvTranspose2d, ShapeSpec, cat, get_norm
+from ....detectron2.layers.wrappers import move_device_like
+from ....detectron2.structures import Instances
+from ....detectron2.utils.events import get_event_storage
+from ....detectron2.utils.registry import Registry
 
 __all__ = [
     "BaseMaskRCNNHead",

@@ -8,14 +8,14 @@ import logging
 from typing import Any, Dict, List, Tuple
 import torch
 
-from parse_utils.detectron2.data import MetadataCatalog
-from parse_utils.detectron2.data import detection_utils as utils
-from parse_utils.detectron2.data import transforms as T
-from parse_utils.detectron2.layers import ROIAlign
-from parse_utils.detectron2.structures import BoxMode
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...detectron2.data import MetadataCatalog
+from ...detectron2.data import detection_utils as utils
+from ...detectron2.data import transforms as T
+from ...detectron2.layers import ROIAlign
+from ...detectron2.structures import BoxMode
+from ...detectron2.utils.file_io import PathManager
 
-from parse_utils.densepose.structures import DensePoseDataRelative, DensePoseList, DensePoseTransformData
+from ..structures import DensePoseDataRelative, DensePoseList, DensePoseTransformData
 
 
 def build_augmentation(cfg, is_train):

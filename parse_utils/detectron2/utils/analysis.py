@@ -7,7 +7,7 @@ import fvcore
 from fvcore.nn import activation_count, flop_count, parameter_count, parameter_count_table
 from torch import nn
 
-from parse_utils.detectron2.export import TracingAdapter
+from ..export import TracingAdapter
 
 __all__ = [
     "activation_count_operators",

@@ -70,7 +70,7 @@ def collect_env_info():
     data.append(("numpy", np.__version__))
 
     try:
-        import parse_utils.detectron2  # noqa
+        from ... import detectron2  # noqa
 
         data.append(
             (
@@ -84,7 +84,7 @@ def collect_env_info():
         data.append(("detectron2", "imported a wrong installation"))
 
     try:
-        import parse_utils.detectron2._C as _C
+        from .. import _C
     except ImportError as e:
         data.append(("detectron2._C", f"not built correctly: {e}"))
 
@@ -237,7 +237,7 @@ def _test_nccl_worker(rank, num_gpu, dist_url):
 def main() -> None:
     global x
     try:
-        from parse_utils.detectron2.utils.collect_env import collect_env_info as f
+        from .collect_env import collect_env_info as f
 
         print(f())
     except ImportError:

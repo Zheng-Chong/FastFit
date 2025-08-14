@@ -1,5 +1,5 @@
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.evaluation import (
+from .....config import LazyCall as L
+from .....evaluation import (
     COCOEvaluator,
     COCOPanopticEvaluator,
     DatasetEvaluators,

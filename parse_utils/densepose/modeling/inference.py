@@ -5,7 +5,7 @@ from dataclasses import fields
 from typing import Any, List
 import torch
 
-from parse_utils.detectron2.structures import Instances
+from ...detectron2.structures import Instances
 
 
 def densepose_inference(densepose_predictor_output: Any, detections: List[Instances]) -> None:

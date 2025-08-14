@@ -2,9 +2,9 @@
 
 # pyre-unsafe
 
-from parse_utils.detectron2.structures import BitMasks, Instances
+from ....detectron2.structures import BitMasks, Instances
 
-from parse_utils.densepose.converters import ToMaskConverter
+from ...converters import ToMaskConverter
 
 
 class MaskFromDensePoseSampler:

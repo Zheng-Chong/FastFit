@@ -4,8 +4,8 @@ import math
 from typing import List, Tuple, Union
 import torch
 
-from parse_utils.detectron2.layers import batched_nms, cat, move_device_like
-from parse_utils.detectron2.structures import Boxes, Instances
+from ...layers import batched_nms, cat, move_device_like
+from ...structures import Boxes, Instances
 
 logger = logging.getLogger(__name__)
 

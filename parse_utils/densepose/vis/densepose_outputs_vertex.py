@@ -8,10 +8,10 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import torch
 
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...detectron2.utils.file_io import PathManager
 
-from parse_utils.densepose.modeling import build_densepose_embedder
-from parse_utils.densepose.modeling.cse.utils import get_closest_vertices_mask_from_ES
+from ..modeling import build_densepose_embedder
+from ..modeling.cse.utils import get_closest_vertices_mask_from_ES
 
 from ..data.utils import get_class_to_mesh_name_mapping
 from ..structures import DensePoseEmbeddingPredictorOutput

@@ -4,9 +4,9 @@ from ..common.data.coco import dataloader
 from ..common.models.mask_rcnn_fpn import model
 from ..common.train import train
 
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.modeling.backbone import RegNet
-from parse_utils.detectron2.modeling.backbone.regnet import SimpleStem, ResBottleneckBlock
+from ....config import LazyCall as L
+from ....modeling.backbone import RegNet
+from ....modeling.backbone.regnet import SimpleStem, ResBottleneckBlock
 
 
 # Replace default ResNet with RegNetY-4GF from the DDS paper. Config source:

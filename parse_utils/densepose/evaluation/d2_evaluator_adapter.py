@@ -2,10 +2,10 @@
 
 # pyre-unsafe
 
-from parse_utils.detectron2.data.catalog import Metadata
-from parse_utils.detectron2.evaluation import COCOEvaluator
+from ...detectron2.data.catalog import Metadata
+from ...detectron2.evaluation import COCOEvaluator
 
-from parse_utils.densepose.data.datasets.coco import (
+from ...densepose.data.datasets.coco import (
     get_contiguous_id_to_category_id_map,
     maybe_filter_categories_cocoapi,
 )

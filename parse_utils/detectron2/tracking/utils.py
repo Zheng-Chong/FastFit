@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 from typing import List
-
-from parse_utils.detectron2.structures import Instances
+from ..structures import Instances
 
 
 def create_prediction_pairs(

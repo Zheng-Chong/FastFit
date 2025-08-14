@@ -9,9 +9,9 @@ import torch
 from omegaconf import DictConfig, OmegaConf
 from torch import Tensor, nn
 
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.structures import BitMasks, Boxes, ImageList, Instances
-from parse_utils.detectron2.utils.events import get_event_storage
+from ..layers import ShapeSpec
+from ..structures import BitMasks, Boxes, ImageList, Instances
+from ..utils.events import get_event_storage
 
 from .backbone import Backbone
 

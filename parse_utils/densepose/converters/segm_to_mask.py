@@ -6,7 +6,7 @@ from typing import Any
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.structures import BitMasks, Boxes, BoxMode
+from ...detectron2.structures import BitMasks, Boxes, BoxMode
 
 from .base import IntTupleBox, make_int_box
 from .to_mask import ImageSizeType

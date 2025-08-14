@@ -5,7 +5,7 @@ import numpy as np
 from typing import List, Optional, Tuple
 import torch
 
-from parse_utils.detectron2.data.detection_utils import read_image
+from ...detectron2.data.detection_utils import read_image
 
 from ..structures import DensePoseChartResult
 from .base import Boxes, Image

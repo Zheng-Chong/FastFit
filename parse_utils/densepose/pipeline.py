@@ -9,14 +9,14 @@ import numpy as np
 import torch
 from PIL import Image
 
-from parse_utils.densepose.vis.base import CompoundVisualizer
-from parse_utils.densepose.vis.densepose_results import DensePoseResultsFineSegmentationVisualizer
-from parse_utils.densepose.vis.extractor import CompoundExtractor, create_extractor
-from parse_utils.detectron2.config import get_cfg
-from parse_utils.detectron2.data.detection_utils import read_image
-from parse_utils.detectron2.engine.defaults import DefaultPredictor
+from .vis.base import CompoundVisualizer
+from .vis.densepose_results import DensePoseResultsFineSegmentationVisualizer
+from .vis.extractor import CompoundExtractor, create_extractor
+from ..detectron2.config import get_cfg
+from ..detectron2.data.detection_utils import read_image
+from ..detectron2.engine.defaults import DefaultPredictor
 
-from parse_utils.densepose.config import add_densepose_config
+from .config import add_densepose_config
 
 
 def densepose_to_rgb(densepose: Union[Image.Image, np.ndarray], colormap=cv2.COLORMAP_VIRIDIS):

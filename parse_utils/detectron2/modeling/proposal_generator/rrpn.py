@@ -4,10 +4,10 @@ import logging
 from typing import Dict, List
 import torch
 
-from parse_utils.detectron2.config import configurable
-from parse_utils.detectron2.layers import ShapeSpec, batched_nms_rotated, cat
-from parse_utils.detectron2.structures import Instances, RotatedBoxes, pairwise_iou_rotated
-from parse_utils.detectron2.utils.memory import retry_if_cuda_oom
+from ...config import configurable
+from ...layers import ShapeSpec, batched_nms_rotated, cat
+from ...structures import Instances, RotatedBoxes, pairwise_iou_rotated
+from ...utils.memory import retry_if_cuda_oom
 
 from ..box_regression import Box2BoxTransformRotated
 from .build import PROPOSAL_GENERATOR_REGISTRY

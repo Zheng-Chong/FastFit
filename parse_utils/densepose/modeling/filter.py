@@ -5,9 +5,9 @@
 from typing import List
 import torch
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.structures import Instances
-from parse_utils.detectron2.structures.boxes import matched_pairwise_iou
+from ...detectron2.config import CfgNode
+from ...detectron2.structures import Instances
+from ...detectron2.structures.boxes import matched_pairwise_iou
 
 
 class DensePoseDataFilter:

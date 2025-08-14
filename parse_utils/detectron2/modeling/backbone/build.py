@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.utils.registry import Registry
+from ...layers import ShapeSpec
+from ...utils.registry import Registry
 
 from .backbone import Backbone
 

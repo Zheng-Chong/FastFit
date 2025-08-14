@@ -6,7 +6,7 @@ from typing import Dict
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.structures.boxes import Boxes, BoxMode
+from ...detectron2.structures.boxes import Boxes, BoxMode
 
 from ..structures import (
     DensePoseChartPredictorOutput,

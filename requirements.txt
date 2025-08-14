@@ -12,3 +12,7 @@ pycocotools
 av
 huggingface-hub
 pillow
+onnxruntime
+omegaconf
+einops
+matplotlib

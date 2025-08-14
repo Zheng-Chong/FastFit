@@ -1,12 +1,10 @@
 from ..common.optim import SGD as optimizer
-from ..common.coco_schedule import lr_multiplier_1x as lr_multiplier
-from ..common.data.coco import dataloader
 from ..common.models.mask_rcnn_fpn import model
 from ..common.train import train
 
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.modeling.backbone import RegNet
-from parse_utils.detectron2.modeling.backbone.regnet import SimpleStem, ResBottleneckBlock
+from ....config import LazyCall as L
+from ....modeling.backbone import RegNet
+from ....modeling.backbone.regnet import SimpleStem, ResBottleneckBlock
 
 
 # Replace default ResNet with RegNetX-4GF from the DDS paper. Config source:

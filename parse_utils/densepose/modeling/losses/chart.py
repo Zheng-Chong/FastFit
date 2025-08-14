@@ -6,8 +6,8 @@ from typing import Any, List
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.structures import Instances
+from ....detectron2.config import CfgNode
+from ....detectron2.structures import Instances
 
 from .mask_or_segm import MaskOrSegmentationLoss
 from .registry import DENSEPOSE_LOSS_REGISTRY

@@ -4,7 +4,7 @@
 
 from typing import Optional
 
-from parse_utils.detectron2.data import DatasetCatalog, MetadataCatalog
+from ....detectron2.data import DatasetCatalog, MetadataCatalog
 
 from ..utils import maybe_prepend_base_path
 from .dataset_type import DatasetType

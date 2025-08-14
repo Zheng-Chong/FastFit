@@ -9,15 +9,15 @@ from fvcore.transforms import HFlipTransform, NoOpTransform
 from torch import nn
 from torch.nn.parallel import DistributedDataParallel
 
-from parse_utils.detectron2.config import configurable
-from parse_utils.detectron2.data.detection_utils import read_image
-from parse_utils.detectron2.data.transforms import (
+from ..config import configurable
+from ..data.detection_utils import read_image
+from ..data.transforms import (
     RandomFlip,
     ResizeShortestEdge,
     ResizeTransform,
     apply_augmentations,
 )
-from parse_utils.detectron2.structures import Boxes, Instances
+from ..structures import Boxes, Instances
 
 from .meta_arch import GeneralizedRCNN
 from .postprocessing import detector_postprocess

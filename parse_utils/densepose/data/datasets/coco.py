@@ -10,9 +10,9 @@ from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional
 from fvcore.common.timer import Timer
 
-from parse_utils.detectron2.data import DatasetCatalog, MetadataCatalog
-from parse_utils.detectron2.structures import BoxMode
-from parse_utils.detectron2.utils.file_io import PathManager
+from ....detectron2.data import DatasetCatalog, MetadataCatalog
+from ....detectron2.structures import BoxMode
+from ....detectron2.utils.file_io import PathManager
 
 from ..utils import maybe_prepend_base_path
 

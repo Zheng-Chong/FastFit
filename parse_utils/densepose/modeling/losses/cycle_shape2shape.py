@@ -8,9 +8,9 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import CfgNode
+from ....detectron2.config import CfgNode
 
-from parse_utils.densepose.structures.mesh import create_mesh
+from ....densepose.structures.mesh import create_mesh
 
 from .utils import sample_random_indices
 

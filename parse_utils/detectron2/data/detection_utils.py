@@ -12,7 +12,7 @@ import pycocotools.mask as mask_util
 import torch
 from PIL import Image
 
-from parse_utils.detectron2.structures import (
+from ..structures import (
     BitMasks,
     Boxes,
     BoxMode,
@@ -22,7 +22,7 @@ from parse_utils.detectron2.structures import (
     RotatedBoxes,
     polygons_to_bitmask,
 )
-from parse_utils.detectron2.utils.file_io import PathManager
+from ..utils.file_io import PathManager
 
 from . import transforms as T
 from .catalog import MetadataCatalog

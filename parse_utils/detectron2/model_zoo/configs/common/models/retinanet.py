@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.modeling.meta_arch import RetinaNet
-from parse_utils.detectron2.modeling.anchor_generator import DefaultAnchorGenerator
-from parse_utils.detectron2.modeling.backbone.fpn import LastLevelP6P7
-from parse_utils.detectron2.modeling.backbone import BasicStem, FPN, ResNet
-from parse_utils.detectron2.modeling.box_regression import Box2BoxTransform
-from parse_utils.detectron2.modeling.matcher import Matcher
-from parse_utils.detectron2.modeling.meta_arch.retinanet import RetinaNetHead
+from .....config import LazyCall as L
+from .....layers import ShapeSpec
+from .....modeling.meta_arch import RetinaNet
+from .....modeling.anchor_generator import DefaultAnchorGenerator
+from .....modeling.backbone.fpn import LastLevelP6P7
+from .....modeling.backbone import BasicStem, FPN, ResNet
+from .....modeling.box_regression import Box2BoxTransform
+from .....modeling.matcher import Matcher
+from .....modeling.meta_arch.retinanet import RetinaNetHead
 
 from ..data.constants import constants
 

@@ -1,14 +1,14 @@
 from omegaconf import OmegaConf
 
-import parse_utils.detectron2.data.transforms as T
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.data import (
+import .....data.transforms as T
+from .....config import LazyCall as L
+from .....data import (
     DatasetMapper,
     build_detection_test_loader,
     build_detection_train_loader,
     get_detection_dataset_dicts,
 )
-from parse_utils.detectron2.evaluation import COCOEvaluator
+from .....evaluation import COCOEvaluator
 
 dataloader = OmegaConf.create()
 

@@ -1,10 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 # pyre-unsafe
-from parse_utils.detectron2.data import MetadataCatalog
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...detectron2.data import MetadataCatalog
+from ...detectron2.utils.file_io import PathManager
 
-from parse_utils.densepose import DensePoseTransformData
+from ...densepose import DensePoseTransformData
 
 
 def load_for_dataset(dataset_name):

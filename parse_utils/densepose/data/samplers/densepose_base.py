@@ -6,11 +6,11 @@ from typing import Any, Dict, List, Tuple
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.structures import BoxMode, Instances
+from ....detectron2.structures import BoxMode, Instances
 
-from parse_utils.densepose.converters import ToChartResultConverter
-from parse_utils.densepose.converters.base import IntTupleBox, make_int_box
-from parse_utils.densepose.structures import DensePoseDataRelative, DensePoseList
+from ...converters import ToChartResultConverter
+from ...converters.base import IntTupleBox, make_int_box
+from ...structures import DensePoseDataRelative, DensePoseList
 
 
 class DensePoseBaseSampler:

@@ -4,7 +4,7 @@
 
 from typing import Any, Tuple
 
-from parse_utils.detectron2.structures import BitMasks, Boxes
+from ...detectron2.structures import BitMasks, Boxes
 
 from .base import BaseConverter
 

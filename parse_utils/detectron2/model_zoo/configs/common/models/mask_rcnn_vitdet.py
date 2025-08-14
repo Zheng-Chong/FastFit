@@ -1,8 +1,8 @@
 from functools import partial
 import torch.nn as nn
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.modeling import ViT, SimpleFeaturePyramid
-from parse_utils.detectron2.modeling.backbone.fpn import LastLevelMaxPool
+from .....config import LazyCall as L
+from .....modeling import ViT, SimpleFeaturePyramid
+from .....modeling.backbone.fpn import LastLevelMaxPool
 
 from .mask_rcnn_fpn import model
 from ..data.constants import constants

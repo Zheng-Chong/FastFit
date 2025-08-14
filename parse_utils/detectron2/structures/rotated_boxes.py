@@ -3,7 +3,7 @@ import math
 from typing import List, Tuple
 import torch
 
-from parse_utils.detectron2.layers.rotated_boxes import pairwise_iou_rotated
+from ..layers.rotated_boxes import pairwise_iou_rotated
 
 from .boxes import Boxes
 

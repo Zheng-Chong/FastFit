@@ -7,7 +7,7 @@ import torch
 import tqdm
 from fvcore.common.timer import Timer
 
-from parse_utils.detectron2.utils import comm
+from ...utils import comm
 
 from .build import build_batch_data_loader
 from .common import DatasetFromList, MapDataset

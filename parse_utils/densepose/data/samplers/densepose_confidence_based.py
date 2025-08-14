@@ -6,7 +6,7 @@ import random
 from typing import Optional, Tuple
 import torch
 
-from parse_utils.densepose.converters import ToChartResultConverterWithConfidences
+from ...converters import ToChartResultConverterWithConfidences
 
 from .densepose_base import DensePoseBaseSampler
 

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Optional
 import torch
 
-from parse_utils.detectron2.structures import BoxMode, Instances
+from ....detectron2.structures import BoxMode, Instances
 
 from .utils import AnnotationsAccumulator
 

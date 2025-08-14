@@ -5,7 +5,7 @@
 import os
 from typing import Dict, Optional
 
-from parse_utils.detectron2.config import CfgNode
+from ...detectron2.config import CfgNode
 
 
 def is_relative_local_path(path: str) -> bool:

@@ -21,28 +21,28 @@ from fvcore.nn.precise_bn import get_bn_modules
 from omegaconf import OmegaConf
 from torch.nn.parallel import DistributedDataParallel
 
-import parse_utils.detectron2.data.transforms as T
-from parse_utils.detectron2.checkpoint import DetectionCheckpointer
-from parse_utils.detectron2.config import CfgNode, LazyConfig
-from parse_utils.detectron2.data import (
+from ..data import transforms as T
+from ..checkpoint import DetectionCheckpointer
+from ..config import CfgNode, LazyConfig
+from ..data import (
     MetadataCatalog,
     build_detection_test_loader,
     build_detection_train_loader,
 )
-from parse_utils.detectron2.evaluation import (
+from ..evaluation import (
     DatasetEvaluator,
     inference_on_dataset,
     print_csv_format,
     verify_results,
 )
-from parse_utils.detectron2.modeling import build_model
-from parse_utils.detectron2.solver import build_lr_scheduler, build_optimizer
-from parse_utils.detectron2.utils import comm
-from parse_utils.detectron2.utils.collect_env import collect_env_info
-from parse_utils.detectron2.utils.env import seed_all_rng
-from parse_utils.detectron2.utils.events import CommonMetricPrinter, JSONWriter, TensorboardXWriter
-from parse_utils.detectron2.utils.file_io import PathManager
-from parse_utils.detectron2.utils.logger import setup_logger
+from ..modeling import build_model
+from ..solver import build_lr_scheduler, build_optimizer
+from ..utils import comm
+from ..utils.collect_env import collect_env_info
+from ..utils.env import seed_all_rng
+from ..utils.events import CommonMetricPrinter, JSONWriter, TensorboardXWriter
+from ..utils.file_io import PathManager
+from ..utils.logger import setup_logger
 
 from . import hooks
 from .train_loop import AMPTrainer, SimpleTrainer, TrainerBase

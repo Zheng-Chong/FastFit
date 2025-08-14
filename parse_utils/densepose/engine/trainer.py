@@ -9,21 +9,21 @@ from typing import List, Optional, Union
 import torch
 from torch import nn
 
-from parse_utils.detectron2.checkpoint import DetectionCheckpointer
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.engine import DefaultTrainer
-from parse_utils.detectron2.evaluation import (
+from ...detectron2.checkpoint import DetectionCheckpointer
+from ...detectron2.config import CfgNode
+from ...detectron2.engine import DefaultTrainer
+from ...detectron2.evaluation import (
     DatasetEvaluator,
     DatasetEvaluators,
     inference_on_dataset,
     print_csv_format,
 )
-from parse_utils.detectron2.solver.build import get_default_optimizer_params, maybe_add_gradient_clipping
-from parse_utils.detectron2.utils import comm
-from parse_utils.detectron2.utils.events import EventWriter, get_event_storage
+from ...detectron2.solver.build import get_default_optimizer_params, maybe_add_gradient_clipping
+from ...detectron2.utils import comm
+from ...detectron2.utils.events import EventWriter, get_event_storage
 
-from parse_utils.densepose.pipeline import DensePoseDatasetMapperTTA, DensePoseGeneralizedRCNNWithTTA, load_from_cfg
-from parse_utils.densepose.data import (
+from ...densepose.pipeline import DensePoseDatasetMapperTTA, DensePoseGeneralizedRCNNWithTTA, load_from_cfg
+from ...densepose.data import (
     DatasetMapper,
     build_combined_loader,
     build_detection_test_loader,
@@ -31,9 +31,9 @@ from parse_utils.densepose.data import (
     build_inference_based_loaders,
     has_inference_based_loaders,
 )
-from parse_utils.densepose.evaluation.d2_evaluator_adapter import Detectron2COCOEvaluatorAdapter
-from parse_utils.densepose.evaluation.evaluator import DensePoseCOCOEvaluator, build_densepose_evaluator_storage
-from parse_utils.densepose.modeling.cse import Embedder
+from ...densepose.evaluation.d2_evaluator_adapter import Detectron2COCOEvaluatorAdapter
+from ...densepose.evaluation.evaluator import DensePoseCOCOEvaluator, build_densepose_evaluator_storage
+from ...densepose.modeling.cse import Embedder
 
 
 class SampleCountingLoader:

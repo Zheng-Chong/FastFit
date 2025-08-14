@@ -1,13 +1,13 @@
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.modeling.meta_arch import GeneralizedRCNN
-from parse_utils.detectron2.modeling.anchor_generator import DefaultAnchorGenerator
-from parse_utils.detectron2.modeling.backbone import BasicStem, BottleneckBlock, ResNet
-from parse_utils.detectron2.modeling.box_regression import Box2BoxTransform
-from parse_utils.detectron2.modeling.matcher import Matcher
-from parse_utils.detectron2.modeling.poolers import ROIPooler
-from parse_utils.detectron2.modeling.proposal_generator import RPN, StandardRPNHead
-from parse_utils.detectron2.modeling.roi_heads import (
+from .....config import LazyCall as L
+from .....layers import ShapeSpec
+from .....modeling.meta_arch import GeneralizedRCNN
+from .....modeling.anchor_generator import DefaultAnchorGenerator
+from .....modeling.backbone import BasicStem, BottleneckBlock, ResNet
+from .....modeling.box_regression import Box2BoxTransform
+from .....modeling.matcher import Matcher
+from .....modeling.poolers import ROIPooler
+from .....modeling.proposal_generator import RPN, StandardRPNHead
+from .....modeling.roi_heads import (
     FastRCNNOutputLayers,
     MaskRCNNConvUpsampleHead,
     Res5ROIHeads,

@@ -23,8 +23,8 @@ from diffusers.utils.torch_utils import randn_tensor
 from PIL import Image
 from tqdm import tqdm
 
-from module.unet_2d_condition import UNet2DConditionModel
-from module.utils import (
+from .unet_2d_condition import UNet2DConditionModel
+from .utils import (
     numpy_to_pil,
     prepare_extra_step_kwargs,
     prepare_image,

@@ -8,9 +8,9 @@ from typing import List, Optional
 import torch
 from torch import nn
 
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...detectron2.utils.file_io import PathManager
 
-from parse_utils.densepose.structures.mesh import create_mesh
+from ...densepose.structures.mesh import create_mesh
 
 
 class MeshAlignmentEvaluator:

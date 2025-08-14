@@ -6,8 +6,8 @@ from typing import Dict
 import torch
 from scipy.optimize import linear_sum_assignment
 
-from parse_utils.detectron2.config import configurable
-from parse_utils.detectron2.structures import Boxes, Instances
+from ..config import configurable
+from ..structures import Boxes, Instances
 
 from ..config.config import CfgNode as CfgNode_
 from .base_tracker import BaseTracker

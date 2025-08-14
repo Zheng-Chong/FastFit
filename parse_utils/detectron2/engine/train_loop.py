@@ -9,9 +9,9 @@ from typing import List, Mapping, Optional
 import torch
 from torch.nn.parallel import DataParallel, DistributedDataParallel
 
-import parse_utils.detectron2.utils.comm as comm
-from parse_utils.detectron2.utils.events import EventStorage, get_event_storage
-from parse_utils.detectron2.utils.logger import _log_api_usage
+from ..utils import comm
+from ..utils.events import EventStorage, get_event_storage
+from ..utils.logger import _log_api_usage
 
 __all__ = ["HookBase", "TrainerBase", "SimpleTrainer", "AMPTrainer"]
 

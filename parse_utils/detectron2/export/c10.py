@@ -5,12 +5,12 @@ from typing import Dict
 import torch
 import torch.nn.functional as F
 
-from parse_utils.detectron2.layers import ShapeSpec, cat
-from parse_utils.detectron2.layers.roi_align_rotated import ROIAlignRotated
-from parse_utils.detectron2.modeling import poolers
-from parse_utils.detectron2.modeling.proposal_generator import rpn
-from parse_utils.detectron2.modeling.roi_heads.mask_head import mask_rcnn_inference
-from parse_utils.detectron2.structures import Boxes, ImageList, Instances, Keypoints, RotatedBoxes
+from ..layers import ShapeSpec, cat
+from ..layers.roi_align_rotated import ROIAlignRotated
+from ..modeling import poolers
+from ..modeling.proposal_generator import rpn
+from ..modeling.roi_heads.mask_head import mask_rcnn_inference
+from ..structures import Boxes, ImageList, Instances, Keypoints, RotatedBoxes
 
 from .shared import alias, to_device
 

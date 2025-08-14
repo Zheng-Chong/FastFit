@@ -1,8 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 import torch
 
-from parse_utils.detectron2.utils.logger import _log_api_usage
-from parse_utils.detectron2.utils.registry import Registry
+from ...utils.logger import _log_api_usage
+from ...utils.registry import Registry
 
 META_ARCH_REGISTRY = Registry("META_ARCH")  # noqa F401 isort:skip
 META_ARCH_REGISTRY.__doc__ = """

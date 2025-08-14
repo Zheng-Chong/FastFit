@@ -5,7 +5,7 @@
 from typing import Optional
 from torch import nn
 
-from parse_utils.detectron2.config import CfgNode
+from ...detectron2.config import CfgNode
 
 from .cse.embedder import Embedder
 from .filter import DensePoseDataFilter

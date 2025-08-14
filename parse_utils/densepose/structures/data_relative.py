@@ -5,9 +5,9 @@ import numpy as np
 import torch
 from torch.nn import functional as F
 
-from parse_utils.densepose.data.meshes.catalog import MeshCatalog
-from parse_utils.densepose.structures.mesh import load_mesh_symmetry
-from parse_utils.densepose.structures.transform_data import DensePoseTransformData
+from ..data.meshes.catalog import MeshCatalog
+from .mesh import load_mesh_symmetry
+from .transform_data import DensePoseTransformData
 
 
 class DensePoseDataRelative:
@@ -177,7 +177,7 @@ class DensePoseDataRelative:
             self._transform_segm(transforms, densepose_transform_data)
 
     def _transform_pts(self, transforms, dp_transform_data):
-        import parse_utils.detectron2.data.transforms as T
+        from ...detectron2.data import transforms as T
 
         # NOTE: This assumes that HorizFlipTransform is the only one that does flip
         do_hflip = sum(isinstance(t, T.HFlipTransform) for t in transforms.transforms) % 2 == 1
@@ -220,7 +220,7 @@ class DensePoseDataRelative:
         self.vertex_ids = mesh_symmetry["vertex_transforms"][self.vertex_ids]
 
     def _transform_segm(self, transforms, dp_transform_data):
-        import parse_utils.detectron2.data.transforms as T
+        from ...detectron2.data import transforms as T
 
         # NOTE: This assumes that HorizFlipTransform is the only one that does flip
         do_hflip = sum(isinstance(t, T.HFlipTransform) for t in transforms.transforms) % 2 == 1

@@ -4,7 +4,7 @@
 
 from typing import Any
 
-from parse_utils.detectron2.structures import Boxes
+from ...detectron2.structures import Boxes
 
 from ..structures import DensePoseChartResult, DensePoseChartResultWithConfidences
 from .base import BaseConverter

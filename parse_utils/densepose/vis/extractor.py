@@ -5,17 +5,17 @@ import logging
 from typing import List, Optional, Sequence, Tuple
 import torch
 
-from parse_utils.detectron2.layers.nms import batched_nms
-from parse_utils.detectron2.structures.instances import Instances
+from ...detectron2.layers.nms import batched_nms
+from ...detectron2.structures.instances import Instances
 
-from parse_utils.densepose.converters import ToChartResultConverterWithConfidences
-from parse_utils.densepose.structures import (
+from ..converters import ToChartResultConverterWithConfidences
+from ..structures import (
     DensePoseChartResultWithConfidences,
     DensePoseEmbeddingPredictorOutput,
 )
-from parse_utils.densepose.vis.bounding_box import BoundingBoxVisualizer, ScoredBoundingBoxVisualizer
-from parse_utils.densepose.vis.densepose_outputs_vertex import DensePoseOutputsVertexVisualizer
-from parse_utils.densepose.vis.densepose_results import DensePoseResultsVisualizer
+from .bounding_box import BoundingBoxVisualizer, ScoredBoundingBoxVisualizer
+from .densepose_outputs_vertex import DensePoseOutputsVertexVisualizer
+from .densepose_results import DensePoseResultsVisualizer
 
 from .base import CompoundVisualizer
 

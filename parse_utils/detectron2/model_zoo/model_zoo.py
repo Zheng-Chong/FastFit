@@ -4,9 +4,9 @@ from typing import Optional
 import pkg_resources
 import torch
 
-from parse_utils.detectron2.checkpoint import DetectionCheckpointer
-from parse_utils.detectron2.config import CfgNode, LazyConfig, get_cfg, instantiate
-from parse_utils.detectron2.modeling import build_model
+from ..checkpoint import DetectionCheckpointer
+from ..config import CfgNode, LazyConfig, get_cfg, instantiate
+from ..modeling import build_model
 
 
 class _ModelZooUrls:

@@ -6,10 +6,10 @@ import struct
 import types
 import torch
 
-from parse_utils.detectron2.modeling import meta_arch
-from parse_utils.detectron2.modeling.box_regression import Box2BoxTransform
-from parse_utils.detectron2.modeling.roi_heads import keypoint_head
-from parse_utils.detectron2.structures import Boxes, ImageList, Instances, RotatedBoxes
+from ..modeling import meta_arch
+from ..modeling.box_regression import Box2BoxTransform
+from ..modeling.roi_heads import keypoint_head
+from ..structures import Boxes, ImageList, Instances, RotatedBoxes
 
 from .c10 import Caffe2Compatible
 from .caffe2_patch import ROIHeadsPatcher, patch_generalized_rcnn

@@ -15,18 +15,18 @@ from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 from tabulate import tabulate
 
-import parse_utils.detectron2.utils.comm as comm
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.data import MetadataCatalog
-from parse_utils.detectron2.data.datasets.coco import convert_to_coco_json
-from parse_utils.detectron2.structures import Boxes, BoxMode, pairwise_iou
-from parse_utils.detectron2.utils.file_io import PathManager
-from parse_utils.detectron2.utils.logger import create_small_table
+from ..utils import comm
+from ..config import CfgNode
+from ..data import MetadataCatalog
+from ..data.datasets.coco import convert_to_coco_json
+from ..structures import Boxes, BoxMode, pairwise_iou
+from ..utils.file_io import PathManager
+from ..utils.logger import create_small_table
 
 from .evaluator import DatasetEvaluator
 
 try:
-    from parse_utils.detectron2.evaluation.fast_eval_api import COCOeval_opt
+    from ..evaluation.fast_eval_api import COCOeval_opt
 except ImportError:
     COCOeval_opt = COCOeval
 

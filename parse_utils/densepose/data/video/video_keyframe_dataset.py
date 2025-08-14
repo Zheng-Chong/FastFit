@@ -11,7 +11,7 @@ import av
 import torch
 from torch.utils.data.dataset import Dataset
 
-from parse_utils.detectron2.utils.file_io import PathManager
+from ....detectron2.utils.file_io import PathManager
 
 from ..utils import maybe_prepend_base_path
 from .frame_selector import FrameSelector, FrameTsList

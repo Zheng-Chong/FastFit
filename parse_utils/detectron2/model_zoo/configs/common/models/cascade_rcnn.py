@@ -1,8 +1,8 @@
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.modeling.box_regression import Box2BoxTransform
-from parse_utils.detectron2.modeling.matcher import Matcher
-from parse_utils.detectron2.modeling.roi_heads import FastRCNNOutputLayers, FastRCNNConvFCHead, CascadeROIHeads
+from .....config import LazyCall as L
+from .....layers import ShapeSpec
+from .....modeling.box_regression import Box2BoxTransform
+from .....modeling.matcher import Matcher
+from .....modeling.roi_heads import FastRCNNOutputLayers, FastRCNNConvFCHead, CascadeROIHeads
 
 from .mask_rcnn_fpn import model
 

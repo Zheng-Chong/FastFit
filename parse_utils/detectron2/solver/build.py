@@ -12,8 +12,8 @@ from fvcore.common.param_scheduler import (
     StepWithFixedGammaParamScheduler,
 )
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.utils.env import TORCH_VERSION
+from ..config import CfgNode
+from ..utils.env import TORCH_VERSION
 
 from .lr_scheduler import LRMultiplier, LRScheduler, WarmupParamScheduler
 

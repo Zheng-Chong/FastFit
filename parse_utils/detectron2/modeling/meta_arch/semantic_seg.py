@@ -6,10 +6,10 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import configurable
-from parse_utils.detectron2.layers import Conv2d, ShapeSpec, get_norm
-from parse_utils.detectron2.structures import ImageList
-from parse_utils.detectron2.utils.registry import Registry
+from ...config import configurable
+from ...layers import Conv2d, ShapeSpec, get_norm
+from ...structures import ImageList
+from ...utils.registry import Registry
 
 from ..backbone import Backbone, build_backbone
 from ..postprocessing import sem_seg_postprocess

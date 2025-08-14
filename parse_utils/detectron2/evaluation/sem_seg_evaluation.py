@@ -10,9 +10,9 @@ import pycocotools.mask as mask_util
 import torch
 from PIL import Image
 
-from parse_utils.detectron2.data import DatasetCatalog, MetadataCatalog
-from parse_utils.detectron2.utils.comm import all_gather, is_main_process, synchronize
-from parse_utils.detectron2.utils.file_io import PathManager
+from ..data import DatasetCatalog, MetadataCatalog
+from ..utils.comm import all_gather, is_main_process, synchronize
+from ..utils.file_io import PathManager
 
 from .evaluator import DatasetEvaluator
 

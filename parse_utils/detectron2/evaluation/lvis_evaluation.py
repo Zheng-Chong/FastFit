@@ -8,12 +8,12 @@ import pickle
 from collections import OrderedDict
 import torch
 
-import parse_utils.detectron2.utils.comm as comm
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.data import MetadataCatalog
-from parse_utils.detectron2.structures import Boxes, BoxMode, pairwise_iou
-from parse_utils.detectron2.utils.file_io import PathManager
-from parse_utils.detectron2.utils.logger import create_small_table
+from ..utils import comm
+from ..config import CfgNode
+from ..data import MetadataCatalog
+from ..structures import Boxes, BoxMode, pairwise_iou
+from ..utils.file_io import PathManager
+from ..utils.logger import create_small_table
 
 from .coco_evaluation import instances_to_coco_json
 from .evaluator import DatasetEvaluator

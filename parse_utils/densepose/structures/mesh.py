@@ -7,9 +7,9 @@ from functools import lru_cache
 from typing import Dict, Optional, Tuple
 import torch
 
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...detectron2.utils.file_io import PathManager
 
-from parse_utils.densepose.data.meshes.catalog import MeshCatalog, MeshInfo
+from ..data.meshes.catalog import MeshCatalog, MeshInfo
 
 
 def _maybe_copy_to_device(

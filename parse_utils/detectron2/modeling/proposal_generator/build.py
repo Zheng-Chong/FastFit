@@ -1,5 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
-from parse_utils.detectron2.utils.registry import Registry
+from ...utils.registry import Registry
 
 PROPOSAL_GENERATOR_REGISTRY = Registry("PROPOSAL_GENERATOR")
 PROPOSAL_GENERATOR_REGISTRY.__doc__ = """

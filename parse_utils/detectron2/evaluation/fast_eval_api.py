@@ -5,7 +5,7 @@ import numpy as np
 import time
 from pycocotools.cocoeval import COCOeval
 
-from parse_utils.detectron2 import _C
+from .. import _C
 
 logger = logging.getLogger(__name__)
 

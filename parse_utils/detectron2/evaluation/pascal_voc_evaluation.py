@@ -10,9 +10,9 @@ from collections import OrderedDict, defaultdict
 from functools import lru_cache
 import torch
 
-from parse_utils.detectron2.data import MetadataCatalog
-from parse_utils.detectron2.utils import comm
-from parse_utils.detectron2.utils.file_io import PathManager
+from ..data import MetadataCatalog
+from ..utils import comm
+from ..utils.file_io import PathManager
 
 from .evaluator import DatasetEvaluator
 

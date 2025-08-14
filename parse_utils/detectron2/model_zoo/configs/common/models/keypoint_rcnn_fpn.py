@@ -1,7 +1,7 @@
-from parse_utils.detectron2.config import LazyCall as L
-from parse_utils.detectron2.layers import ShapeSpec
-from parse_utils.detectron2.modeling.poolers import ROIPooler
-from parse_utils.detectron2.modeling.roi_heads import KRCNNConvDeconvUpsampleHead
+from .....config import LazyCall as L
+from .....layers import ShapeSpec
+from .....modeling.poolers import ROIPooler
+from .....modeling.roi_heads import KRCNNConvDeconvUpsampleHead
 
 from .mask_rcnn_fpn import model
 

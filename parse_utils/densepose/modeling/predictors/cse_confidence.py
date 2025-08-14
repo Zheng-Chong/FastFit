@@ -6,12 +6,12 @@ from typing import Any
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.layers import ConvTranspose2d
+from ....detectron2.config import CfgNode
+from ....detectron2.layers import ConvTranspose2d
 
-from parse_utils.densepose.modeling.confidence import DensePoseConfidenceModelConfig
-from parse_utils.densepose.modeling.utils import initialize_module_params
-from parse_utils.densepose.structures import decorate_cse_predictor_output_class_with_confidences
+from ....densepose.modeling.confidence import DensePoseConfidenceModelConfig
+from ....densepose.modeling.utils import initialize_module_params
+from ....densepose.structures import decorate_cse_predictor_output_class_with_confidences
 
 
 class DensePoseEmbeddingConfidencePredictorMixin:

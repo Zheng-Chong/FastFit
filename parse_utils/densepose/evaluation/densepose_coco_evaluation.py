@@ -25,16 +25,16 @@ from pycocotools import mask as maskUtils
 from scipy.io import loadmat
 from scipy.ndimage import zoom as spzoom
 
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...detectron2.utils.file_io import PathManager
 
-from parse_utils.densepose.converters.chart_output_to_chart_result import resample_uv_tensors_to_bbox
-from parse_utils.densepose.converters.segm_to_mask import (
+from ...densepose.converters.chart_output_to_chart_result import resample_uv_tensors_to_bbox
+from ...densepose.converters.segm_to_mask import (
     resample_coarse_segm_tensor_to_bbox,
     resample_fine_and_coarse_segm_tensors_to_bbox,
 )
-from parse_utils.densepose.modeling.cse.utils import squared_euclidean_distance_matrix
-from parse_utils.densepose.structures import DensePoseDataRelative
-from parse_utils.densepose.structures.mesh import create_mesh
+from ...densepose.modeling.cse.utils import squared_euclidean_distance_matrix
+from ...densepose.structures import DensePoseDataRelative
+from ...densepose.structures.mesh import create_mesh
 
 logger = logging.getLogger(__name__)
 

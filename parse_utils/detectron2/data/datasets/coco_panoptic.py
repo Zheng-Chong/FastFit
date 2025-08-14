@@ -3,8 +3,8 @@ import copy
 import json
 import os
 
-from parse_utils.detectron2.data import DatasetCatalog, MetadataCatalog
-from parse_utils.detectron2.utils.file_io import PathManager
+from ...data import DatasetCatalog, MetadataCatalog
+from ...utils.file_io import PathManager
 
 from .coco import load_coco_json, load_sem_seg
 
@@ -201,12 +201,11 @@ if __name__ == "__main__":
         "dataset_name" can be "coco_2017_train_panoptic", or other
         pre-registered ones
     """
-    from parse_utils.detectron2.utils.logger import setup_logger
-    from parse_utils.detectron2.utils.visualizer import Visualizer
-    import parse_utils.detectron2.data.datasets  # noqa # add pre-defined metadata
+    from ...utils.logger import setup_logger
+    from ...utils.visualizer import Visualizer
     import sys
     from PIL import Image
-    import numpy as np
+    import numpy as np 
 
     logger = setup_logger(name=__name__)
     assert sys.argv[4] in DatasetCatalog.list()

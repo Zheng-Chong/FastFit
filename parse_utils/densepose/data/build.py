@@ -11,21 +11,21 @@ from typing import Any, Callable, Collection, Dict, Iterable, List, Optional, Se
 import torch
 from torch.utils.data.dataset import Dataset
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.data.build import build_detection_test_loader as d2_build_detection_test_loader
-from parse_utils.detectron2.data.build import build_detection_train_loader as d2_build_detection_train_loader
-from parse_utils.detectron2.data.build import (
+from ...detectron2.config import CfgNode
+from ...detectron2.data.build import build_detection_test_loader as d2_build_detection_test_loader
+from ...detectron2.data.build import build_detection_train_loader as d2_build_detection_train_loader
+from ...detectron2.data.build import (
     load_proposals_into_dataset,
     print_instances_class_histogram,
     trivial_batch_collator,
     worker_init_reset_seed,
 )
-from parse_utils.detectron2.data.catalog import DatasetCatalog, Metadata, MetadataCatalog
-from parse_utils.detectron2.data.samplers import TrainingSampler
-from parse_utils.detectron2.utils.comm import get_world_size
+from ...detectron2.data.catalog import DatasetCatalog, Metadata, MetadataCatalog
+from ...detectron2.data.samplers import TrainingSampler
+from ...detectron2.utils.comm import get_world_size
 
-from parse_utils.densepose.config import get_bootstrap_dataset_config
-from parse_utils.densepose.modeling import build_densepose_embedder
+from ..config import get_bootstrap_dataset_config
+from ..modeling import build_densepose_embedder
 
 from .combined_loader import CombinedDataLoader, Loader
 from .dataset_mapper import DatasetMapper

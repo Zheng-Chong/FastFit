@@ -17,17 +17,17 @@ import torch
 from pycocotools.coco import COCO
 from tabulate import tabulate
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.data import MetadataCatalog
-from parse_utils.detectron2.evaluation import DatasetEvaluator
-from parse_utils.detectron2.structures import BoxMode
-from parse_utils.detectron2.utils.comm import gather, get_rank, is_main_process, synchronize
-from parse_utils.detectron2.utils.file_io import PathManager
-from parse_utils.detectron2.utils.logger import create_small_table
+from ...detectron2.config import CfgNode
+from ...detectron2.data import MetadataCatalog
+from ...detectron2.evaluation import DatasetEvaluator
+from ...detectron2.structures import BoxMode
+from ...detectron2.utils.comm import gather, get_rank, is_main_process, synchronize
+from ...detectron2.utils.file_io import PathManager
+from ...detectron2.utils.logger import create_small_table
 
-from parse_utils.densepose.converters import ToChartResultConverter, ToMaskConverter
-from parse_utils.densepose.data.datasets.coco import maybe_filter_and_map_categories_cocoapi
-from parse_utils.densepose.structures import (
+from ...densepose.converters import ToChartResultConverter, ToMaskConverter
+from ...densepose.data.datasets.coco import maybe_filter_and_map_categories_cocoapi
+from ...densepose.structures import (
     DensePoseChartPredictorOutput,
     DensePoseEmbeddingPredictorOutput,
     quantize_densepose_chart_result,

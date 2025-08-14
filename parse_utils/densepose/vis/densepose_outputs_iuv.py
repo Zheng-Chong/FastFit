@@ -5,7 +5,7 @@ import numpy as np
 from typing import Optional, Tuple
 import cv2
 
-from parse_utils.densepose.structures import DensePoseDataRelative
+from ..structures import DensePoseDataRelative
 
 from ..structures import DensePoseChartPredictorOutput
 from .base import Boxes, Image, MatrixVisualizer

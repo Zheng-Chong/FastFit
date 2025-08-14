@@ -6,13 +6,13 @@ from typing import Any, Dict, List, Tuple
 import torch
 from torch.nn import functional as F
 
-from parse_utils.detectron2.config import CfgNode
-from parse_utils.detectron2.structures import Instances
+from ....detectron2.config import CfgNode
+from ....detectron2.structures import Instances
 
-from parse_utils.densepose.converters.base import IntTupleBox
-from parse_utils.densepose.data.utils import get_class_to_mesh_name_mapping
-from parse_utils.densepose.modeling.cse.utils import squared_euclidean_distance_matrix
-from parse_utils.densepose.structures import DensePoseDataRelative
+from ...converters.base import IntTupleBox
+from ...data.utils import get_class_to_mesh_name_mapping
+from ...modeling.cse.utils import squared_euclidean_distance_matrix
+from ...structures import DensePoseDataRelative
 
 from .densepose_base import DensePoseBaseSampler
 
