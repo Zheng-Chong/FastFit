@@ -148,11 +148,19 @@ python eval.py \
 
 - `--paired`: Include this flag to evaluate results from the paired setting. Omit this flag for the unpaired setting.
 
-<!-- ## Citation
+## Citation
 
 ```bibtex
-
-``` -->
+@misc{chong2025fastfitacceleratingmultireferencevirtual,
+      title={FastFit: Accelerating Multi-Reference Virtual Try-On via Cacheable Diffusion Models}, 
+      author={Zheng Chong and Yanwei Lei and Shiyue Zhang and Zhuandi He and Zhen Wang and Xujie Zhang and Xiao Dong and Yiling Wu and Dongmei Jiang and Xiaodan Liang},
+      year={2025},
+      eprint={2508.20586},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2508.20586}, 
+}
+```
 
 ## Acknowledgement
 Our code is modified based on [Diffusers](https://github.com/huggingface/diffusers). We adopt [Stable Diffusion v1.5 inpainting](https://huggingface.co/runwayml/stable-diffusion-inpainting) as the base model. We use a modified [AutoMasker](https://github.com/Zheng-Chong/CatVTON/blob/edited/model/cloth_masker.py) to automatically generate masks in our [Gradio](https://github.com/gradio-app/gradio) App and [ComfyUI](https://github.com/comfyanonymous/ComfyUI) workflow. Thanks to all the contributors!
